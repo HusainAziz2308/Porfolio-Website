@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aziz Husain - Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="sticky-nav">
+        <div class="container">
+            <button class="menu-toggle" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-title">
+                <h1>Aziz Husain</h1>
+            </div>
+            <nav class="nav-links">
+                <ul>
+                    <li><a href="#about" data-section="about">About</a></li>
+                    <li><a href="#coding" data-section="coding">Coding</a></li>
+                    <li><a href="#photography" data-section="photography">Photography</a></li>
+                    <li><a href="#video" data-section="video">Video</a></li>
+                    <li><a href="#design" data-section="design">Design</a></li>
+                    <li><a href="#contact" data-section="contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="hero-section">
+        <div class="parallax-bg"></div>
+        <div class="hero-content">
+            <h1>Aziz Husain</h1>
+            <p>Developer, Photographer, Videographer, & Designer</p>
+            <a href="#about" class="scroll-button">View My Work</a>
+        </div>
+    </div>
+
+    <section id="about" class="section">
+        <div class="container">
+            <h2>About Me</h2>
+            <p>Welcome to my portfolio! I'm a passionate creator who loves bringing ideas to life through code, a lens, and design. I specialize in web development but also have a deep appreciation for visual storytelling.</p>
+        </div>
+    </section>
+
+    <section id="coding" class="section project-grid">
+        <div class="container">
+            <h2>Coding Projects</h2>
+            <div class="project-item">
+                <h3>Project Title 1</h3>
+                <p>A brief description of your coding project. Mention the technologies used (e.g., HTML, CSS, JavaScript, React).</p>
+                <a href="#">View Live</a> | <a href="#">GitHub Repo</a>
+            </div>
+            <div class="project-item">
+                <h3>Project Title 2</h3>
+                <p>Another project description. Highlight a problem you solved or a feature you're proud of.</p>
+                <a href="#">View Live</a> | <a href="#">GitHub Repo</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="photography" class="section gallery">
+        <div class="container">
+            <h2>Photography</h2>
+            <div class="gallery-grid">
+                <img src="images/photo1.jpg" alt="Description of photo 1">
+                <img src="images/photo2.jpg" alt="Description of photo 2">
+                <img src="images/photo3.jpg" alt="Description of photo 3">
+            </div>
+        </div>
+    </section>
+
+    <section id="video" class="section">
+        <div class="container">
+            <h2>Video & Short Films</h2>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID_1" frameborder="0" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID_2" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+
+    <section id="design" class="section gallery">
+        <div class="container">
+            <h2>Poster Design</h2>
+            <div class="gallery-grid">
+                <img src="images/design1.jpg" alt="Description of design 1">
+                <img src="images/design2.jpg" alt="Description of design 2">
+                <img src="images/design3.jpg" alt="Description of design 3">
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <div class="container">
+            <h2>Contact Me</h2>
+            <p>Feel free to reach out via email or connect with me on social media.</p>
+            <p>Email: <a href="mailto:your.email@gmail.com">your.email@gmail.com</a></p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="current-year"></span> Your Name. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
