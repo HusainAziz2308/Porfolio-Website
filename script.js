@@ -66,6 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
     sections.forEach(section => {
         observer.observe(section);
     });
+
+    // New: Check for active section on page load
+    const firstSection = document.querySelector('section');
+    if (firstSection) {
+        setActiveLink(firstSection.id);
+    }
 });
 
 // Existing: Script for dynamic parallax background scroll effect

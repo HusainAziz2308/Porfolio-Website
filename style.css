@@ -34,12 +34,25 @@ h1, h2 {
 
 .sticky-nav .container {
     display: flex;
-    justify-content: space-between; /* Adjusted to spread out the nav links */
+    justify-content: space-between;
     align-items: center;
+    /* New: Adjusted padding to 0 for a full-width nav bar in desktop mode */
+    padding: 0;
+}
+
+.sticky-nav .nav-title {
+    /* New: Add padding to the title to prevent it from touching the edge */
+    padding: 0 20px;
+}
+
+.sticky-nav .nav-title h1 {
+    font-size: 1.5em;
+    margin: 0;
+    color: #fff;
 }
 
 .sticky-nav nav {
-    flex-grow: 1; /* Allows the nav to fill remaining space */
+    flex-grow: 1;
 }
 
 .sticky-nav nav ul {
@@ -48,13 +61,21 @@ h1, h2 {
     margin: 0;
     display: flex;
     justify-content: space-between;
-    height: 100px; /* Set a fixed height for the navbar */
+    height: 100px;
 }
 
 .sticky-nav nav li {
-    padding: 0;
     position: relative;
-    flex: 1; /* New: Make list items fit the width of the navbar */
+    flex: 1;
+    transition: background-color 0.3s ease;
+}
+
+.sticky-nav nav li:hover {
+    background-color: #1029bb;
+}
+
+.sticky-nav nav li.active-nav {
+    background-color: #1a35c9;
 }
 
 .sticky-nav nav a {
@@ -63,10 +84,10 @@ h1, h2 {
     font-weight: bold;
     font-size: 18px;
     transition: color 0.3s ease;
-    display: block; /* New: Make the link a block element */
-    width: 100%; /* New: Make the link fill the list item's width */
-    height: 100%; /* New: Make the link fill the list item's height */
-    display: flex; /* Used to center the text vertically and horizontally */
+    display: block;
+    width: 100%;
+    height: 100%;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -77,7 +98,6 @@ h1, h2 {
 }
 
 /* --- Underline-style Navigation --- */
-/* Default state of the underline (hidden) */
 .sticky-nav nav a::after {
     content: '';
     position: absolute;
@@ -85,21 +105,18 @@ h1, h2 {
     left: 0;
     width: 100%;
     height: 4px;
-    background-color: #ffa500;
-    transform: scaleX(0); /* Hide the underline by default */
+    background-color: #00aeff;
+    transform: scaleX(0);
     transition: transform 0.3s ease;
 }
 
-/* Active state: show the underline */
 .sticky-nav nav li.active-nav a::after {
-    transform: scaleX(1); /* Animate the underline to full width */
+    transform: scaleX(1);
 }
 
-/* Hover effect for links */
 .sticky-nav nav li:not(.active-nav):hover a::after {
-    transform: scaleX(1); /* Show underline on hover for non-active links */
+    transform: scaleX(1);
 }
-
 
 /* Hero Section with Parallax Background */
 .hero-section {
@@ -253,13 +270,12 @@ footer {
         width: 95%;
     }
     
-    /* Center the title and space out elements */
     .sticky-nav .container {
         justify-content: space-between;
         align-items: center;
+        padding: 0 10px;
     }
     
-    /* Navigation Links */
     .sticky-nav .nav-links {
         display: none;
         position: absolute;
@@ -284,27 +300,28 @@ footer {
         flex-direction: column;
         align-items: stretch;
         width: 100%;
+        height: auto;
     }
 
     .sticky-nav .nav-links li {
         padding: 0;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100%;
     }
-    
-    /* Make the anchor tag fill the entire list item */
+
     .sticky-nav .nav-links a {
         display: block;
-        padding: 15px 0;
+        padding: 15px 20px;
         width: 100%;
-        height: auto; /* Reset height for mobile */
+        height: auto;
     }
 
     /* Mobile Title */
     .nav-title {
         display: block;
         color: #fff;
-        flex-grow: 1; /* Allows the title to take up remaining space */
-        text-align: center; /* Centers the title text */
+        flex-grow: 1;
+        text-align: center;
     }
 
     .nav-title h1 {
@@ -321,8 +338,8 @@ footer {
         border: none;
         cursor: pointer;
         padding: 0;
-        margin-left: 15px; /* Adjust margin to push it to the left */
-        order: -1; /* Puts the button at the start of the flex container */
+        margin-left: 15px;
+        order: -1;
     }
 
     .menu-toggle span {
@@ -364,7 +381,7 @@ footer {
 
 /* --- Image Modal Pop-up --- */
 .modal {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed; 
     z-index: 2000;
     left: 0;
