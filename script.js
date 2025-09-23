@@ -1,7 +1,7 @@
 // Get the current year and display it in the footer
 document.getElementById('current-year').textContent = new Date().getFullYear();
 
-// New: Hamburger menu functionality and mobile navigation
+// Hamburger menu functionality and mobile navigation
 document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
@@ -76,5 +76,33 @@ window.addEventListener('scroll', () => {
     if (scrolled < hero.offsetHeight) {
         const translateY = scrolled * 0.4;
         hero.style.backgroundPositionY = `${-translateY}px`;
+    }
+});
+
+// --- Image Modal Functionality ---
+const modal = document.getElementById('image-modal');
+const modalImage = document.getElementById('modal-image');
+const modalTitle = document.getElementById('modal-title');
+const closeBtn = document.querySelector('.close-btn');
+
+document.querySelectorAll('.gallery-grid img').forEach(image => {
+    image.addEventListener('click', () => {
+        const imgSrc = image.src;
+        const imgTitle = image.getAttribute('data-title');
+
+        modalImage.src = imgSrc;
+        modalTitle.textContent = imgTitle;
+        modal.style.display = 'block';
+    });
+});
+
+closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
+// Close modal when clicking outside of the image
+window.addEventListener('click', (event) => {
+    if (event.target === modal) {
+        modal.style.display = 'none';
     }
 });

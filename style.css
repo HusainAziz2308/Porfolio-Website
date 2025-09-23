@@ -7,6 +7,7 @@ body {
     background-color: #f4f4f4;
     color: #333;
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 .container {
@@ -27,15 +28,18 @@ h1, h2 {
     width: 100%;
     background: #00158f;
     color: #fff;
-    border-bottom: #092eff 3px solid;
     text-align: center;
     z-index: 1000;
 }
 
 .sticky-nav .container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between; /* Adjusted to spread out the nav links */
     align-items: center;
+}
+
+.sticky-nav nav {
+    flex-grow: 1; /* Allows the nav to fill remaining space */
 }
 
 .sticky-nav nav ul {
@@ -43,12 +47,14 @@ h1, h2 {
     list-style: none;
     margin: 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    height: 100px; /* Set a fixed height for the navbar */
 }
 
 .sticky-nav nav li {
-    padding: 0 35px;
-    transition: background-color 0.3s ease;
+    padding: 0;
+    position: relative;
+    flex: 1; /* New: Make list items fit the width of the navbar */
 }
 
 .sticky-nav nav a {
@@ -57,8 +63,12 @@ h1, h2 {
     font-weight: bold;
     font-size: 18px;
     transition: color 0.3s ease;
-    display: inline-block;
-    padding: 25px 0;
+    display: block; /* New: Make the link a block element */
+    width: 100%; /* New: Make the link fill the list item's width */
+    height: 100%; /* New: Make the link fill the list item's height */
+    display: flex; /* Used to center the text vertically and horizontally */
+    justify-content: center;
+    align-items: center;
 }
 
 /* Hide hamburger menu and mobile title by default on large screens */
@@ -66,27 +76,30 @@ h1, h2 {
     display: none;
 }
 
-/* Active state styling */
-.sticky-nav nav li.active-nav {
-    background-color: rgba(255, 255, 255, 0.4);
+/* --- Underline-style Navigation --- */
+/* Default state of the underline (hidden) */
+.sticky-nav nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #ffa500;
+    transform: scaleX(0); /* Hide the underline by default */
+    transition: transform 0.3s ease;
 }
 
-/* Hover and active states for user interaction */
-.sticky-nav nav li:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+/* Active state: show the underline */
+.sticky-nav nav li.active-nav a::after {
+    transform: scaleX(1); /* Animate the underline to full width */
 }
 
-.sticky-nav nav li:active {
-    background-color: rgba(255, 255, 255, 0.4);
+/* Hover effect for links */
+.sticky-nav nav li:not(.active-nav):hover a::after {
+    transform: scaleX(1); /* Show underline on hover for non-active links */
 }
 
-.sticky-nav nav li:hover a {
-    color: #ffa500;
-}
-
-.sticky-nav nav li:active a {
-    color: #ffff00;
-}
 
 /* Hero Section with Parallax Background */
 .hero-section {
@@ -283,6 +296,7 @@ footer {
         display: block;
         padding: 15px 0;
         width: 100%;
+        height: auto; /* Reset height for mobile */
     }
 
     /* Mobile Title */
@@ -346,4 +360,65 @@ footer {
     .video-container iframe {
         height: 200px;
     }
+}
+
+/* --- Image Modal Pop-up --- */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; 
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.modal-content {
+    position: relative;
+    margin: auto;
+    padding: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    max-width: 90%;
+    animation: fadeIn 0.5s;
+}
+
+.modal-content h3 {
+    color: #fff;
+    font-size: 1.5em;
+    margin-top: 0;
+}
+
+#modal-image {
+    max-width: 100%;
+    max-height: 80vh; 
+    display: block;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+
+.close-btn {
+    color: #fff;
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #ccc;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
