@@ -104,7 +104,7 @@ h1, h2 {
     left: 0;
     width: 100%;
     height: 4px;
-    background-color: #ffa500; /* Changed back to orange for better contrast/theme */
+    background-color: #00aeff; /* Refined: Used a lighter blue for better contrast/theme */
     transform: scaleX(0);
     transition: transform 0.3s ease;
 }
@@ -282,6 +282,16 @@ h1, h2 {
     border-radius: 4px;
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
     font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Refined: Added focus style for accessibility */
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group textarea:focus {
+    border-color: #00aeff;
+    box-shadow: 0 0 5px rgba(0, 174, 255, 0.5);
+    outline: none; /* Remove default outline */
 }
 
 .form-group textarea {
