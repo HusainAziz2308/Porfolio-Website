@@ -331,6 +331,24 @@ footer {
     margin-top: 20px;
 }
 
+/* New: Social Links Styling */
+.social-links {
+    margin: 15px 0 20px 0; /* Add margin above and below the links */
+}
+
+.social-links a {
+    color: #fff;
+    font-size: 2em; /* Increase icon size */
+    margin: 0 15px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+}
+
+.social-links a:hover {
+    color: #00aeff; /* Hover color */
+    transform: translateY(-3px) scale(1.05);
+}
+
 /* --- 
 ## Responsive Design for Mobile
 ---
