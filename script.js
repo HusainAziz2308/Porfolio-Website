@@ -67,11 +67,49 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(section);
     });
 
-    // New: Check for active section on page load
+    // Check for active section on page load
     const firstSection = document.querySelector('section');
     if (firstSection) {
         setActiveLink(firstSection.id);
     }
+
+    // --- New: Contact Form Submission Handler (for Formspree) ---
+    const form = document.getElementById('contact-form');
+    const formStatus = document.getElementById('form-status');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Stop the default form submission
+        
+        formStatus.textContent = 'Sending...';
+        
+        const formData = new FormData(form);
+        
+        try {
+            const response = await fetch(form.action, {
+                method: form.method,
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                formStatus.textContent = 'Message sent successfully! Thank you.';
+                form.reset(); // Clear the form
+            } else {
+                const data = await response.json();
+                if (data.errors) {
+                    formStatus.textContent = data.errors.map(error => error.message).join(", ");
+                } else {
+                    formStatus.textContent = 'Oops! There was an error sending your message.';
+                }
+            }
+        } catch (error) {
+            formStatus.textContent = 'An unexpected error occurred. Please try again later.';
+            console.error('Error submitting form:', error);
+        }
+    });
+
 });
 
 // Existing: Script for dynamic parallax background scroll effect

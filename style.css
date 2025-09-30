@@ -36,12 +36,11 @@ h1, h2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* New: Adjusted padding to 0 for a full-width nav bar in desktop mode */
+    /* Full-width nav bar in desktop mode */
     padding: 0;
 }
 
 .sticky-nav .nav-title {
-    /* New: Add padding to the title to prevent it from touching the edge */
     padding: 0 20px;
 }
 
@@ -105,7 +104,7 @@ h1, h2 {
     left: 0;
     width: 100%;
     height: 4px;
-    background-color: #00aeff;
+    background-color: #ffa500; /* Changed back to orange for better contrast/theme */
     transform: scaleX(0);
     transition: transform 0.3s ease;
 }
@@ -252,6 +251,67 @@ h1, h2 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Contact Form Styles (New) */
+#contact-form {
+    max-width: 600px;
+    margin: 30px auto 0;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    font-size: 16px;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #00158f;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #1029bb;
+}
+
+.form-status {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #00158f;
+}
+
 /* Footer */
 footer {
     background: #2c3e50;
@@ -376,6 +436,13 @@ footer {
 
     .video-container iframe {
         height: 200px;
+    }
+
+    /* Contact Form on Mobile */
+    #contact-form {
+        margin-left: 0;
+        margin-right: 0;
+        padding: 15px;
     }
 }
 
