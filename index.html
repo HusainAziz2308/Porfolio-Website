@@ -6,8 +6,10 @@
     <title>Aziz Husain - Programmer & Visual Artist</title>
     
     <!-- External Libraries and Your Styles -->
-    <!-- 1. Three.js for 3D/Canvas (NEW) -->
+    <!-- 1. Three.js for 3D/Canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- 2. Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
     <!-- Your main stylesheet -->
     <link rel="stylesheet" href="style/style.css">
@@ -23,12 +25,13 @@
             <a href="#visual-arts" data-section="visual-arts">Visual Arts</a>
             <a href="#contact" data-section="contact">Contact</a>
         </nav>
+        <!-- Menu Toggle Button -->
         <button class="menu-toggle" aria-label="Toggle navigation menu">
             <i class="fas fa-bars"></i>
         </button>
     </header>
     
-    <!-- Mobile Navigation Overlay (Hidden by CSS/JS initially) -->
+    <!-- Mobile Navigation Overlay -->
     <nav class="mobile-nav-overlay">
         <button class="close-menu-toggle"><i class="fas fa-times"></i></button>
         <ul>
@@ -76,8 +79,10 @@
                 
                 <!-- Project Grid Placeholder -->
                 <div class="project-grid">
-                    <!-- Project Item 1: Placeholder for a coding project -->
+                    <!-- Project Item 1: Link to the new detail page -->
                     <a href="pages/project-detail.html" class="project-item coding-project" data-scroll data-scroll-speed="1">
+                        <!-- Placeholder image for parallax -->
+                        <img src="https://placehold.co/800x600/181818/FF3B00?text=Project+One+Visual" alt="Project One Visual" loading="lazy">
                         <div class="project-overlay">
                             <h3>Responsive Layout System</h3>
                             <p>React / Tailwind CSS</p>
@@ -86,6 +91,8 @@
                     
                     <!-- Project Item 2: Placeholder for another coding project -->
                     <a href="pages/project-detail.html" class="project-item coding-project" data-scroll data-scroll-speed="-0.5">
+                        <!-- Placeholder image for parallax -->
+                        <img src="https://placehold.co/800x600/181818/F5F5F5?text=Data+Dashboard+Visual" alt="Project Two Visual" loading="lazy">
                         <div class="project-overlay">
                             <h3>Interactive Data Dashboard</h3>
                             <p>Next.js / D3.js</p>
