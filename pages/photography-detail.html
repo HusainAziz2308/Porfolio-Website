@@ -85,18 +85,5 @@
         <!-- Scripts: Lenis is included via CDN, and our custom script handles initialization -->
         <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.45/dist/lenis.min.js"></script>
         <script src="../script/script.js"></script>
-        <script>
-            // Initialize Lenis for smooth scrolling
-            const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), orientation: 'vertical', gestureOrientation: 'vertical', smoothWheel: true, smoothTouch: false, touchMultiplier: 2, infinite: false });
-
-            function raf(time) {
-                lenis.raf(time);
-                requestAnimationFrame(raf);
-            }
-            requestAnimationFrame(raf);
-            
-            // Set current year
-            document.getElementById('current-year-detail').textContent = new Date().getFullYear();
-        </script>
     </body>
 </html>

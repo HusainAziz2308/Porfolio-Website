@@ -1,15 +1,10 @@
 /**
- * Aziz Husain Portfolio - Custom JavaScript & Lenis Scroll Setup
- * This script initializes the Lenis smooth scrolling library and the
- * Request Animation Frame (RAF) loop needed for all scroll-driven animations.
  * Aziz Husain Portfolio - Main JavaScript File
  * This script handles:
  * 1. Lenis smooth scroll initialization for the entire site.
  * 2. Mobile navigation menu toggle functionality.
  * 3. Scroll-driven animations and effects.
  */
-
-// --- 1. LENIS SMOOTH SCROLL INITIALIZATION ---
 
 // Initialize Lenis with smooth, high-performance settings
 const lenis = new Lenis({
@@ -35,13 +30,10 @@ function raf(time) {
 // Start the RAF loop immediately
 requestAnimationFrame(raf);
 
-// --- 2. CORE LOGIC (Runs after DOM is ready) ---
-
 document.addEventListener('DOMContentLoaded', () => {
     // Explicitly start Lenis listening for scroll inputs.
     lenis.start();
 
-    // 2.1. Element References (Cached for efficient access)
     // --- 1. ELEMENT REFERENCES (Cached for efficiency) ---
     const currentYearEl = document.getElementById('current-year-main');
     const currentYearDetailEl = document.getElementById('current-year-detail');
@@ -52,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileNav = document.querySelector('.mobile-nav-overlay');
     const mobileNavLinks = document.querySelectorAll('.mobile-nav-overlay a');
     
-    // Set Footer Year
     // --- 2. INITIALIZATION & SETUP ---
 
     // Set Footer Year (works on any page)
@@ -63,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
         currentYearDetailEl.textContent = new Date().getFullYear();
     }
     
-    // 2.2. Scroll Event Listener (Handles parallax and effects)
     lenis.on('scroll', ({ scroll, limit }) => {
         
         // Parallax Effect: Fade out Hero Title (Optimized for speed)
@@ -81,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 2.3. Smooth Anchor Links
     // --- 3. EVENT LISTENERS ---
     const internalLinks = document.querySelectorAll('a[href^="#"], a[href^="pages/"]');
     
@@ -102,7 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 3. THREE.JS INITIALIZATION (To be implemented next) ---
     // Mobile Menu Toggle Logic
     if (menuToggle && mobileNav) {
         menuToggle.addEventListener('click', () => {
@@ -125,8 +113,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // The main 3D visualization setup will go here, using the canvas element.
-    // const canvas = document.getElementById('main-3d-canvas');
-    // initThreeJS(canvas); 
     // Future Three.js initialization can go here
 });
