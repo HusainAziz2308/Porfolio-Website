@@ -12,9 +12,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- 3. Lenis for Smooth Scrolling -->
     <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.45/dist/lenis.min.js"></script>
-    <!-- 4. Tailwind CSS (Used for Loader styles) -->
+    <!-- 4. Tailwind CSS (Used for utility classes) -->
     <script src="https://cdn.tailwindcss.com"></script> 
     
+    <!-- Link to your stylesheet -->
+    <link rel="stylesheet" href="style/style.css">
+
+    <!-- The script is now in a separate file -->
     <style>
         /* style/style.css - CONSOLIDATED */
         /* ------------------------------------------- */
@@ -24,7 +28,7 @@
             /* Define Color Palette - Dark, high-contrast theme */
             --color-dark: #0A0A0A; /* Deep Charcoal/Black for background */
             --color-light: #F5F5F5; /* Near-White for text */
-            --color-accent: #FF3B00; /* Bright Orange/Red for key highlights (Lando's McLaren color) */
+            --color-accent: #FF3B00; /* Bright Orange/Red for key highlights */
             --color-medium-gray: #777777; /* For subtle text/dividers */
 
             /* Typography */
@@ -113,7 +117,7 @@
         }
 
         /* ------------------------------------------- */
-        /* 1.6. LOADING OVERLAY STYLES (FROM loading_ui.html) */
+        /* 1.6. LOADING OVERLAY STYLES (Lando Norris Style) */
         /* ------------------------------------------- */
 
         /* Custom Keyframes for the dot animation */
@@ -126,6 +130,12 @@
                 transform: scale(1.0);
                 opacity: 1;
             }
+        }
+        
+        @keyframes text-flash {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
         }
 
         .dot-animation > div {
@@ -154,10 +164,30 @@
             z-index: 9999;
             /* Initially hidden, will be shown by JS */
             display: none;
-            /* Ensures it covers the entire viewport */
             width: 100%;
             height: 100%;
+            background-color: var(--color-dark); /* Use the primary dark color */
         }
+        
+        .loading-text {
+            /* Large, high-impact text for the loader */
+            font-size: 5vw; 
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5em;
+            color: var(--color-accent);
+            /* Add subtle animation to make it dynamic */
+            animation: text-flash 1.5s infinite alternate; 
+        }
+
+        /* Adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .loading-text {
+                font-size: 8vw;
+                letter-spacing: 0.2em;
+            }
+        }
+
 
         /* ------------------------------------------- */
         /* 2. Typography and Utility Classes */
@@ -374,13 +404,13 @@
 
         @keyframes bounce-prompt {
             0%, 20%, 50%, 80%, 100% {
-                transform: translate(-50%, 0);
+                transform: translate(-50%, 0) scale(1);
             }
             40% {
-                transform: translate(-50%, -10px);
+                transform: translate(-50%, -10px) scale(1.05);
             }
             60% {
-                transform: translate(-50%, -5px);
+                transform: translate(-50%, -5px) scale(1);
             }
         }
 
@@ -640,28 +670,28 @@
                 padding: 0 10px;
             }
         }
-    </style>
+    </style> 
 </head>
 <body>
     
     <!-- 
-        LOADING OVERLAY COMPONENT (Integrated from loading_ui.html) 
-        This div covers the entire screen and is designed to block interaction 
-        while necessary assets (like Three.js and Lenis) initialize.
+        LOADING OVERLAY COMPONENT (High-Contrast, High-Impact Style) 
+        Uses a fixed position to cover the viewport, with flexbox for centering.
     -->
-    <div id="loading-overlay" class="loading-overlay w-full h-full flex items-center justify-center bg-gray-900/80 transition-opacity duration-300">
+    <div id="loading-overlay" class="loading-overlay fixed top-0 left-0 z-[9999] w-full h-full bg-[--color-dark] flex flex-col items-center justify-center">
         <div class="text-center">
             
-            <!-- Three-Dot Pulsing Animation -->
-            <div class="dot-animation flex justify-center items-center mb-4">
+            <!-- Text Element: Large, high-impact text -->
+            <p class="text-5xl md:text-7xl font-black uppercase tracking-[0.5em] text-[--color-accent] animate-pulse">
+                AZIZ HUSAIN
+            </p>
+
+            <!-- Three-Dot Pulsing Animation (centered under the text) -->
+            <div class="dot-animation flex justify-center items-center mt-8">
                 <div></div>
                 <div></div>
                 <div></div>
             </div>
-
-            <p class="text-xl font-medium text-white tracking-wider animate-pulse">
-                Loading assets...
-            </p>
         </div>
     </div>
     
@@ -721,9 +751,9 @@
             <section id="programming" class="content-section" data-scroll-section>
                 <div class="content-wrapper">
                     <!-- Apply scroll-reveal to individual text elements -->
-                    <p class="subtitle scroll-reveal">CODE & LOGIC</p>
-                    <h2 class="section-h2 scroll-reveal">Frontend UI Master</h2>
-                    <p class="section-description scroll-reveal">Combining design passion with clean, component-driven code. Projects focus on performance, scalability, and stunning user experiences.</p>
+                    <p class="subtitle scroll-reveal" data-scroll>CODE & LOGIC</p>
+                    <h2 class="section-h2 scroll-reveal" data-scroll>Frontend UI Master</h2>
+                    <p class="section-description scroll-reveal" data-scroll>Combining design passion with clean, component-driven code. Projects focus on performance, scalability, and stunning user experiences.</p>
                     
                     <!-- Project Grid Content -->
                     <div class="project-grid">
@@ -770,10 +800,10 @@
             <!-- The "Visual Arts" Section - Photography, Video, Design -->
             <section id="visual-arts" class="content-section visual-section" data-scroll-section>
                    <div class="content-wrapper">
-                    <!-- Apply scroll-reveal to individual text elements -->
-                    <p class="subtitle scroll-reveal">LIGHT & SHADOW</p>
-                    <h2 class="section-h2 scroll-reveal">Visual Storyteller</h2>
-                    <p class="section-description scroll-reveal">My work behind the lens and on the canvas focuses on abstract concepts, high contrast, and dynamic composition, mirroring the complexity of my engineering projects.</p>
+                    <!-- Apply scroll-reveal to text elements -->
+                    <p class="subtitle scroll-reveal" data-scroll>LIGHT & SHADOW</p>
+                    <h2 class="section-h2 scroll-reveal" data-scroll>Visual Storyteller</h2>
+                    <p class="section-description scroll-reveal" data-scroll>My work behind the lens and on the canvas focuses on abstract concepts, high contrast, and dynamic composition, mirroring the complexity of my engineering projects.</p>
                     
                     <div class="media-showcase">
                         <!-- Media Item 1: Photography -->
@@ -800,16 +830,16 @@
             <!-- The "About/Contact" Section -->
             <section id="contact" class="content-section contact-section" data-scroll-section>
                 <div class="content-wrapper">
-                    <!-- Apply scroll-reveal to individual text elements -->
-                    <p class="subtitle scroll-reveal">GET IN TOUCH</p>
-                    <h2 class="section-h2 scroll-reveal">Let's Build Something Beautiful</h2>
+                    <!-- Apply scroll-reveal to text elements -->
+                    <p class="subtitle scroll-reveal" data-scroll>GET IN TOUCH</p>
+                    <h2 class="section-h2 scroll-reveal" data-scroll>Let's Build Something Beautiful</h2>
                     <div class="contact-grid">
-                        <div class="contact-details scroll-reveal">
+                        <div class="contact-details scroll-reveal" data-scroll>
                             <p>I am currently open for exciting freelance projects, especially those that blend complex frontend engineering with strong visual communication. Whether it's an interactive web application or a striking visual campaign, I'm ready to collaborate.</p>
                             <a href="mailto:aziz.husain.dev@example.com" class="cta-button primary-accent-btn margin-top-lg">Email Me Now</a>
                         </div>
-                        <!-- Placeholder for the Rive/SVG signature animation -->
-                        <div id="signature-animation" class="scroll-reveal">
+                        <!-- Signature placeholder -->
+                        <div id="signature-animation" class="scroll-reveal" data-scroll>
                             <h3 class="signature-placeholder">Aziz Husain<span class="dot-accent">_</span></h3>
                         </div>
                     </div>
@@ -833,307 +863,7 @@
     </div>
 
     <!-- 5. Scripts: Lenis Initialization and Custom JS -->
-    <script>
-        // --- LOADER CONTROL FUNCTIONS (Integrated from loading_ui.html) ---
-        
-        /**
-         * Global function to display the loading overlay.
-         */
-        function showLoader() {
-            const overlay = document.getElementById('loading-overlay');
-            if (overlay) {
-                overlay.style.display = 'flex';
-                // Force a reflow to ensure the display change takes effect before the opacity transition
-                void overlay.offsetWidth; 
-                overlay.style.opacity = '1';
-            }
-        }
-
-        /**
-         * Global function to hide the loading overlay.
-         */
-        function hideLoader() {
-            const overlay = document.getElementById('loading-overlay');
-            if (overlay) {
-                overlay.style.opacity = '0';
-                // Use a timeout matching the CSS transition duration to hide the element completely after the fade-out
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                }, 300); // 300ms matches the transition-opacity duration
-            }
-        }
-        
-        // Show the loader immediately upon script execution, before any heavy setup
-        showLoader();
-
-
-        // --- 1. GLOBAL THREE.JS VARIABLES ---
-        let scene, camera, renderer, mesh, canvas;
-        let mouseX = 0, mouseY = 0;
-        let windowHalfX = window.innerWidth / 2;
-        let windowHalfY = window.innerHeight / 2; 
-        let projectItems = []; 
-        let revealItems = []; 
-
-        // --- 2. LENIS SMOOTH SCROLL INITIALIZATION ---
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-            orientation: 'vertical',
-            gestureOrientation: 'vertical',
-            smoothWheel: true,
-            smoothTouch: false,
-            touchMultiplier: 2,
-            infinite: false,
-        });
-
-        // --- THREE.JS FUNCTIONS (Unchanged) ---
-        function initThreeJS() {
-            if (typeof THREE === 'undefined') {
-                console.error("Three.js not loaded. Cannot initialize 3D scene.");
-                return;
-            }
-            
-            canvas = document.getElementById('main-3d-canvas');
-            if (!canvas) return;
-
-            scene = new THREE.Scene();
-            const fov = window.innerWidth > 768 ? 60 : 75;
-            camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 5;
-
-            renderer = new THREE.WebGLRenderer({ 
-                canvas: canvas, 
-                antialias: true, 
-                alpha: true
-            });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
-            
-            const geometry = new THREE.IcosahedronGeometry(2, 0); 
-            const material = new THREE.MeshBasicMaterial({
-                color: 0xFF3B00, 
-                wireframe: true,
-                transparent: true,
-                opacity: 0.8
-            });
-            
-            mesh = new THREE.Mesh(geometry, material);
-            scene.add(mesh);
-
-            const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5); 
-            scene.add(ambientLight);
-            
-            window.addEventListener('resize', onWindowResize, false);
-            document.addEventListener('mousemove', onDocumentMouseMove, false);
-        }
-
-        function onWindowResize() {
-            windowHalfX = window.innerWidth / 2;
-            windowHalfY = window.innerHeight / 2;
-            
-            if (camera) {
-                const fov = window.innerWidth > 768 ? 60 : 75;
-                camera.fov = fov; 
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-            }
-            
-            if (renderer) {
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            }
-        }
-
-        function onDocumentMouseMove(event) {
-            mouseX = (event.clientX - windowHalfX) * 0.005;
-            mouseY = (event.clientY - windowHalfY) * 0.005;
-        }
-
-        function animateThree() {
-            if (!mesh || !renderer || !camera) return;
-
-            mesh.rotation.x += 0.001;
-            mesh.rotation.y += 0.002;
-            
-            const targetRotationX = -mouseY * 0.5;
-            const targetRotationY = -mouseX * 0.5;
-
-            mesh.rotation.x += (targetRotationX - mesh.rotation.x) * 0.05;
-            mesh.rotation.y += (targetRotationY - mesh.rotation.y) * 0.05;
-
-            renderer.render(scene, camera);
-        }
-
-        function updateProjectParallax() {
-            projectItems.forEach(item => {
-                const rect = item.getBoundingClientRect();
-                if (rect.top > window.innerHeight || rect.bottom < 0) return;
-
-                const center = rect.top + rect.height / 2;
-                const distance = center - windowHalfY;
-                
-                const parallaxStrength = distance * 0.2; 
-                
-                const img = item.querySelector('img');
-                if (img) {
-                    img.style.transform = `translateY(${parallaxStrength}px) translateZ(0)`;
-                }
-            });
-        }
-        
-        // --- SCROLL REVEAL ANIMATION LOGIC (Modularized) ---
-        
-        /**
-         * Function to handle the staggered scroll-in animation for elements.
-         */
-        function revealElementsOnScroll() {
-            const viewportThreshold = window.innerHeight * 0.85; // Trigger when 85% of the element is visible
-
-            revealItems.forEach(item => {
-                if (item.classList.contains('visible')) return;
-
-                const rect = item.getBoundingClientRect();
-                
-                // Check if the top of the element is within the visible viewport area
-                if (rect.top < viewportThreshold) {
-                    item.classList.add('visible');
-                }
-            });
-        }
-
-
-        /**
-         * Request Animation Frame (RAF) Loop (Single, Unified Loop)
-         */
-        function raf(time) {
-            lenis.raf(time);
-            
-            if (renderer) {
-                animateThree();
-            }
-
-            requestAnimationFrame(raf);
-        }
-
-        // Start the RAF loop immediately
-        requestAnimationFrame(raf);
-
-
-        // --- 3. CORE LOGIC (Runs after DOM is ready) ---
-
-        document.addEventListener('DOMContentLoaded', () => {
-            lenis.start();
-            initThreeJS();
-
-            // Cache all elements needed for dynamic updates
-            projectItems = document.querySelectorAll('.project-item');
-            revealItems = document.querySelectorAll('.scroll-reveal'); // Cache reveal elements
-            
-            windowHalfY = window.innerHeight / 2;
-
-            const currentYearEl = document.getElementById('current-year-main');
-            const heroTitle = document.getElementById('hero-title');
-            const scrollPrompt = document.querySelector('.scroll-down-prompt');
-            
-            // Mobile Menu Logic (Unchanged)
-            const menuToggleBtn = document.querySelector('.menu-toggle');
-            const menuCloseBtn = document.querySelector('.close-menu-toggle');
-            const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
-            const mobileNavLinks = mobileNavOverlay ? mobileNavOverlay.querySelectorAll('a') : [];
-            
-            if (currentYearEl) {
-                currentYearEl.textContent = new Date().getFullYear();
-            }
-            
-            function toggleMobileMenu(isOpen) {
-                if (mobileNavOverlay) {
-                    if (isOpen) {
-                        mobileNavOverlay.classList.add('open');
-                        lenis.stop();
-                    } else {
-                        mobileNavOverlay.classList.remove('open');
-                        lenis.start();
-                    }
-                }
-            }
-
-            if (menuToggleBtn) {
-                menuToggleBtn.addEventListener('click', () => toggleMobileMenu(true));
-            }
-            if (menuCloseBtn) {
-                menuCloseBtn.addEventListener('click', () => toggleMobileMenu(false));
-            }
-
-            mobileNavLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const targetId = link.getAttribute('href');
-                    
-                    if (targetId && targetId.startsWith('#')) {
-                        const targetElement = document.querySelector(targetId);
-                        if (targetElement) {
-                            toggleMobileMenu(false);
-                            lenis.scrollTo(targetElement, { offset: -80, duration: 1 });
-                        }
-                    } else if (targetId) {
-                        toggleMobileMenu(false);
-                        window.location.href = targetId;
-                    }
-                });
-            });
-
-            // 3.2. Scroll Event Listener (Handles ALL scroll-based effects)
-            lenis.on('scroll', ({ scroll, limit }) => {
-                
-                // Hero Fade Parallax
-                if (heroTitle) {
-                    const opacity = 1 - (scroll / 300); 
-                    heroTitle.style.opacity = Math.max(0, opacity);
-                    heroTitle.style.transform = `translateY(${scroll * 0.3}px)`;
-                }
-
-                if (scrollPrompt) {
-                    const opacity = 1 - (scroll / 100); 
-                    scrollPrompt.style.opacity = Math.max(0, opacity);
-                }
-                
-                // Project Image Parallax
-                updateProjectParallax();
-
-                // Three.js Scroll Parallax 
-                if (mesh) {
-                    mesh.position.y = -scroll * 0.001; 
-                }
-
-                // Scroll Reveal Animation Call
-                revealElementsOnScroll();
-            });
-
-            // 3.4. Smooth Anchor Links (Desktop/General)
-            const desktopLinks = document.querySelectorAll('nav.desktop-links a[href^="#"]');
-            
-            desktopLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const targetId = link.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-
-                    if (targetElement) {
-                        lenis.scrollTo(targetElement, { offset: -80, duration: 1 });
-                    }
-                });
-            });
-
-            // Run initial reveal check in case items are already in the viewport on load
-            revealElementsOnScroll();
-            
-            // --- HIDE LOADER AFTER SETUP ---
-            // Give a minimal delay to ensure all heavy scripts are executed and rendered
-            setTimeout(() => {
-                hideLoader();
-            }, 300);
-            
-        });
-    </script>
+    <script src="script/animation.js"></script>
+    <script src="script/script.js"></script>
 </body>
 </html>

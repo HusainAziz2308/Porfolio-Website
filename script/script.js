@@ -6,16 +6,38 @@
  * event listener to prevent forced layout calculations on every frame.
  */
 
-// --- 1. GLOBAL THREE.JS VARIABLES ---
-let scene, camera, renderer, mesh, canvas;
-let mouseX = 0, mouseY = 0;
-// Note: windowHalfY is recalculated on resize for responsiveness
-let windowHalfX = window.innerWidth / 2;
-let windowHalfY = window.innerHeight / 2; 
-// Store project items globally so they can be accessed by the parallax function
-let projectItems = []; 
+// --- LOADER CONTROL FUNCTIONS ---
 
-// --- 2. LENIS SMOOTH SCROLL INITIALIZATION ---
+/**
+ * Displays the loading overlay with a fade-in effect.
+ */
+function showLoader() {
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) {
+        overlay.style.display = 'flex';
+        // Use a short timeout to allow the display property to apply before starting the transition
+        setTimeout(() => {
+            overlay.style.opacity = '1';
+        }, 10);
+    }
+}
+
+/**
+ * Hides the loading overlay with a fade-out effect.
+ */
+function hideLoader() {
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) {
+        overlay.style.opacity = '0';
+        // Hide the element completely after the transition finishes
+        setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 300); // This duration should match the CSS transition duration
+    }
+}
+
+// Show the loader as soon as the script begins executing
+showLoader();
 
 // Initialize Lenis with smooth, high-performance settings
 // Loading external library: https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.45/dist/lenis.min.js
@@ -32,168 +54,8 @@ const lenis = new Lenis({
     infinite: false,
 });
 
-/**
- * Three.js Setup Function
- */
-function initThreeJS() {
-    // Check if the required library (Three.js) is loaded
-    if (typeof THREE === 'undefined') {
-        console.error("Three.js not loaded. Cannot initialize 3D scene.");
-        return;
-    }
-    
-    canvas = document.getElementById('main-3d-canvas');
-    if (!canvas) return;
-
-    // SCENE
-    scene = new THREE.Scene();
-    
-    // CAMERA
-    // Adjust FOV based on screen size for better perspective
-    const fov = window.innerWidth > 768 ? 60 : 75;
-    camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 5;
-
-    // RENDERER
-    renderer = new THREE.WebGLRenderer({ 
-        canvas: canvas, 
-        antialias: true, 
-        alpha: true // Important: makes background transparent to see CSS
-    });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    
-    // GEOMETRY (Icosahedron: a complex, aesthetically pleasing shape)
-    const geometry = new THREE.IcosahedronGeometry(2, 0); // Radius 2, detail 0
-    
-    // MATERIAL (Wireframe for the technical/programmer look)
-    const material = new THREE.MeshBasicMaterial({
-        color: 0xFF3B00, // Using the accent color for the wireframe
-        wireframe: true,
-        transparent: true,
-        opacity: 0.8
-    });
-    
-    mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-
-    // LIGHTS (Minimal, since the material is MeshBasicMaterial)
-    const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5); 
-    scene.add(ambientLight);
-    
-    // EVENT LISTENERS
-    window.addEventListener('resize', onWindowResize, false);
-    // Mouse movement for subtle camera/mesh rotation
-    document.addEventListener('mousemove', onDocumentMouseMove, false);
-}
-
-/**
- * Handle Window Resize for Responsiveness
- */
-function onWindowResize() {
-    windowHalfX = window.innerWidth / 2;
-    windowHalfY = window.innerHeight / 2;
-    
-    if (camera) {
-        // Update FOV for mobile if necessary, though this logic is usually only needed once on init
-        const fov = window.innerWidth > 768 ? 60 : 75;
-        camera.fov = fov; 
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-    }
-    
-    if (renderer) {
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-}
-
-/**
- * Handle Mouse Movement for Parallax/Rotation
- */
-function onDocumentMouseMove(event) {
-    // Map mouse position to a small rotation value
-    mouseX = (event.clientX - windowHalfX) * 0.005;
-    mouseY = (event.clientY - windowHalfY) * 0.005;
-}
-
-
-/**
- * Three.js Animation/Render Loop
- * Updates the mesh position, rotation, and renders the scene.
- */
-function animateThree() {
-    // Ensure Three.js objects exist before animating
-    if (!mesh || !renderer || !camera) return;
-
-    // 1. Mesh Rotation/Update
-    mesh.rotation.x += 0.001;
-    mesh.rotation.y += 0.002;
-    
-    // 2. Mouse Parallax Effect (subtle rotation based on mouse position)
-    const targetRotationX = -mouseY * 0.5;
-    const targetRotationY = -mouseX * 0.5;
-
-    // Lerp (Linear Interpolation) for smooth rotation transition
-    mesh.rotation.x += (targetRotationX - mesh.rotation.x) * 0.05;
-    mesh.rotation.y += (targetRotationY - mesh.rotation.y) * 0.05;
-
-    // 3. Render the Scene
-    renderer.render(scene, camera);
-}
-
-
-/**
- * Function to handle the parallax effect for project items.
- * Uses getBoundingClientRect to determine the item's position relative to the viewport.
- * This is now called ONLY when the Lenis scroll value changes.
- */
-function updateProjectParallax() {
-    projectItems.forEach(item => {
-        // Only run for items currently in or near the viewport for performance
-        const rect = item.getBoundingClientRect();
-        // Check if item is outside the viewport (top below 0 or bottom above window.innerHeight)
-        if (rect.top > window.innerHeight || rect.bottom < 0) return;
-
-        // Calculate the center position of the item relative to the viewport
-        const center = rect.top + rect.height / 2;
-        
-        // Calculate the distance from the viewport center (windowHalfY is the center)
-        const distance = center - windowHalfY;
-        
-        // Parallax strength factor (0.2 is subtle)
-        // This calculates the necessary Y-translation to make it appear to scroll slower
-        const parallaxStrength = distance * 0.2; 
-        
-        const img = item.querySelector('img');
-        if (img) {
-            // Apply parallax translation. Using translate3d for GPU acceleration.
-            img.style.transform = `translateY(${parallaxStrength}px) translateZ(0)`;
-        }
-    });
-}
-
-
-/**
- * Request Animation Frame (RAF) Loop (Single, Unified Loop)
- * This loop updates ONLY Lenis and the Three.js scene every frame.
- */
-function raf(time) {
-    lenis.raf(time);
-    
-    // Integrate Three.js animation here (must run on every frame for smooth rotation)
-    if (renderer) {
-        animateThree();
-    }
-
-    // IMPORTANT FIX: updateProjectParallax is NO LONGER called here.
-    // It is now called in lenis.on('scroll', ...)
-
-    requestAnimationFrame(raf);
-}
-
 // Start the RAF loop immediately
-requestAnimationFrame(raf);
-
+// The `raf` function is now in animation.js and will be started below.
 
 // --- 3. CORE LOGIC (Runs after DOM is ready) ---
 
@@ -204,11 +66,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize the 3D scene. This needs the external three.min.js library loaded.
     initThreeJS();
 
-    // Cache project items for parallax function
-    projectItems = document.querySelectorAll('.project-item');
+    // Start the unified Request Animation Frame loop, passing the Lenis instance.
+    requestAnimationFrame((t) => raf(t, lenis));
+
+    // Cache items for animation functions (defined in animation.js)
+    // Note: `projectItems` and `revealItems` are global variables in animation.js
+    projectItems = document.querySelectorAll('.project-item, .media-item');
+    revealItems = document.querySelectorAll('.scroll-reveal');
     
-    // Recalculate windowHalfY based on initial screen size
-    windowHalfY = window.innerHeight / 2;
+    windowHalfY = window.innerHeight / 2; // This is used by animation functions
 
     // 3.1. Element References (Cached for efficient access)
     const currentYearEl = document.getElementById('current-year-main');
@@ -286,10 +152,11 @@ document.addEventListener('DOMContentLoaded', () => {
             scrollPrompt.style.opacity = Math.max(0, opacity);
         }
         
-        // --- FIX IMPLEMENTED HERE: Project Parallax Update ---
+        // Update parallax for project images
         updateProjectParallax();
-        // ---------------------------------------------------
-
+        
+        // Trigger scroll-reveal animations
+        revealElementsOnScroll();
         // 3.3. Three.js Scroll Parallax (Move the 3D shape opposite to scroll)
         if (mesh) {
             // Apply a slight vertical shift to the mesh as the user scrolls
@@ -311,4 +178,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Run an initial check for any elements that are already in the viewport on load
+    revealElementsOnScroll();
+
+    // --- HIDE THE LOADER ---
+    // Hide the loader after a short delay to ensure the initial render is complete
+    setTimeout(() => {
+        hideLoader();
+    }, 500); // A 500ms delay gives a good buffer
 });
