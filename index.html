@@ -3,173 +3,130 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Aziz Husain - Portfolio</title>
-        <link rel="stylesheet" href="style/style.css">
+        <title>Aziz Husain - Portfolio | Immersive</title>
+        <link rel="stylesheet" href="style/style.css"> 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     </head>
     <body>
 
-        <header class="sticky-nav">
-            <div class="container">
-                <button class="menu-toggle" aria-label="Toggle navigation menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-                <div class="nav-title">
-                    <h1>Aziz Husain</h1>
-                </div>
-                <nav class="nav-links">
-                    <ul>
-                        <li><a href="#about" data-section="about">About</a></li>
-                        <li><a href="#coding"
-                                data-section="coding">Coding</a></li>
-                        <li><a href="#photography"
-                                data-section="photography">Photography</a></li>
-                        <li><a href="#video" data-section="video">Video</a></li>
-                        <li><a href="#design"
-                                data-section="design">Design</a></li>
-                        <li><a href="#contact"
-                                data-section="contact">Contact</a></li>
-                    </ul>
-                </nav>
-            </div>
+        <header class="fixed-nav">
+            <h1 class="logo">AZIZ HUSAIN</h1>
+            <nav class="desktop-links">
+                <a href="#about" data-section="about">About</a>
+                <a href="#work" data-section="work">Work</a>
+                <a href="#contact" data-section="contact">Contact</a>
+            </nav>
+            <button class="menu-toggle" aria-label="Toggle navigation menu">
+                <i class="fas fa-bars"></i>
+            </button>
         </header>
+        
+        <nav class="mobile-nav-overlay">
+            <button class="close-menu-toggle"><i class="fas fa-times"></i></button>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#work">Coding & Visuals</a></li>
+                <li><a href="#contact">Get In Touch</a></li>
+                </ul>
+        </nav>
 
-        <div class="hero-section">
-            <div class="parallax-bg"></div>
-            <div class="hero-content">
-                <h1>Aziz Husain</h1>
-                <p>Developer, Photographer, Videographer, & Designer</p>
-                <a href="#about" class="scroll-button">View My Work</a>
-            </div>
-        </div>
-
-        <section id="about" class="section">
-            <div class="container">
-                <h2>About Me</h2>
-                <p>Welcome to my portfolio! I'm a passionate creator who loves
-                    bringing ideas to life through code, a lens, and design. I
-                    specialized in web development but also have a deep
-                    appreciation for visual storytelling.</p>
+        <section id="hero" class="full-panel hero-panel" data-bg-image="assets/images/IMG_1367.JPG">
+            <div class="content-wrapper">
+                <h2 class="title-xl">AZIZ HUSAIN</h2>
+                <p class="subtitle">Developer & Visual Creator</p>
+                <a href="#about" class="cta-button">EXPLORE PORTFOLIO</a>
             </div>
         </section>
 
-        <section id="coding" class="section project-grid">
-            <div class="container">
-                <h2>Coding Projects</h2>
-                <div class="project-item">
-                    <h3>Develop BEP Calculator </h3>
-                    <p>A brief description of your coding project. Mention the
-                        technologies used (e.g., HTML, CSS, JavaScript,
-                        React).</p>
-                    <a href="#">View Live</a> | <a href="#">GitHub Repo</a>
-                </div>
-                <div class="project-item">
-                    <h3>Project Title 2</h3>
-                    <p>Another project description. Highlight a problem you
-                        solved or a feature you're proud of.</p>
-                    <a href="#">View Live</a> | <a href="#">GitHub Repo</a>
-                </div>
+        <section id="about" class="full-panel about-panel">
+            <div class="content-wrapper">
+                <h2 class="title-l">CREATING STORIES, <br> ONE PIXEL AT A TIME.</h2>
+                <p class="text-l">I specialize in **full-stack web development** while fueling my passion for visual communication through photography, videography, and graphic design. My work is defined by precision, impact, and a dedication to detail.</p>
             </div>
         </section>
 
-        <section id="photography" class="section gallery">
-            <div class="container">
-                <h2>Photography</h2>
-                <div class="gallery-grid">
-                    <img src="images/photography/IMG_2268.JPG"
-                        alt="Departemen medkominfo"
-                        data-title="Departemen Medkominfo">
-                    <img src="images/photography/IMG_2247.JPG"
-                        alt="Divisi Media" data-title="Divisi Media">
-                    <img src="images/photography/IMG_2251.JPG"
-                        alt="Ketua divisi" data-title="Ketua Divisi">
-                    <img src="images/photography/IMG_2256.JPG"
-                        alt="Divisi Komunikasi & Informasi"
-                        data-title="Divisi Komunikasi & Informasi">
-                </div>
-            </div>
-        </section>
+        <section id="work" class="full-panel work-panel">
+            <div class="content-wrapper">
+                <h2 class="title-l">SELECTED WORKS</h2>
+                <div class="work-grid">
+                    <!-- 1. CODE: Links to the existing project detail page -->
+                    <a href="pages/project-detail.html" class="work-item coding-item" data-title="BEP Calculator" data-category="Code | Web Dev">
+                        <img src="assets/images/placeholder-bep-calculator.jpg" alt="BEP Calculator Project" class="work-img">
+                        <div class="overlay-text">
+                            <h3>BEP Calculator</h3>
+                            <p>Web Development</p>
+                        </div>
+                    </a>
+                    
+                    <!-- 2. PHOTO: Links to the new photography page -->
+                    <a href="pages/photography-detail.html" class="work-item photo-item" data-title="Divisi Media" data-category="Visual | Photography">
+                        <img src="assets/images/photography/IMG_2247.JPG" alt="Divisi Media Photo" class="work-img">
+                        <div class="overlay-text">
+                            <h3>Divisi Media</h3>
+                            <p>Photography</p>
+                        </div>
+                    </a>
 
-        <section id="video" class="section">
-            <div class="container">
-                <h2>Video & Short Films</h2>
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/Fq9ZDNtSjSk"
-                        frameborder="0" allowfullscreen></iframe>
-                    <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID_2"
-                        frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
-        </section>
+                    <!-- 3. VIDEO: Links to the new videography page -->
+                    <a href="pages/videography-detail.html" class="work-item video-item" data-title="Short Film Title" data-category="Visual | Videography">
+                         <img src="assets/images/videography/video-thumbnail.png" onerror="this.style.display='none'; this.parentNode.querySelector('.video-placeholder').style.display='flex';" alt="Video Thumbnail" class="work-img">
+                        <div class="video-placeholder" style="display:none; width: 100%; height: 100%; justify-content: center; align-items: center; background-color: #00158f; font-size: 3rem;">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div class="overlay-text">
+                            <h3>Short Film Title</h3>
+                            <p>Videography</p>
+                        </div>
+                    </a>
 
-        <section id="design" class="section gallery">
-            <div class="container">
-                <h2>Poster Design</h2>
-                <div class="gallery-grid">
-                    <img src="images/Poster/poster oscar saintek 2025 4.png" alt="poster oscar saintek 2025"
-                        data-title="Poster oscar saintek 2025">
-                    <img src="images/Poster/Lewis Hamilton.png" alt="Lewis Hamilton"
-                        data-title="Lewis Hamilton">
-                    <img src="images/Poster/Komdis fst.png" alt="Komdis of Saintek"
-                        data-title="Komdis of Saintek">
+                    <!-- 4. DESIGN: Links to the new poster detail page -->
+                    <a href="pages/poster-detail.html" class="work-item design-item" data-title="Oscar Saintek Poster" data-category="Visual | Design">
+                        <img src="assets/images/Poster/poster oscar saintek 2025 4.png" alt="Oscar Saintek Poster" class="work-img">
+                        <div class="overlay-text">
+                            <h3>Saintek Poster</h3>
+                            <p>Graphic Design</p>
+                        </div>
+                    </a>
+
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="section">
-            <div class="container">
-                <h2>Contact Me</h2>
-                <p>Have a project in mind or just want to say hello? Fill out the form below!</p>
+        <section id="contact" class="full-panel contact-panel">
+            <div class="content-wrapper">
+                <h2 class="title-l">LET'S CONNECT.</h2>
                 
-                <form id="contact-form" action="https://formspree.io/f/xkgqrrpn" method="POST">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <input type="text" id="subject" name="subject" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" rows="6" required></textarea>
-                    </div>
-                    <button type="submit" class="submit-button">Send Message</button>
+                <form id="contact-form">
+                    <input type="text" id="name" name="name" placeholder="YOUR NAME" required>
+                    <input type="email" id="email" name="email" placeholder="YOUR EMAIL" required>
+                    <textarea id="message" name="message" rows="4" placeholder="YOUR MESSAGE" required></textarea>
+                    <button type="submit" class="cta-submit-button">SEND MESSAGE</button>
                     <p class="form-status" id="form-status"></p>
                 </form>
-                <p>Or contact me via my social media down bellow</p>
-                </div>
-                
-        </section>
 
-        <footer>
-            <div class="container">
-                <div class="social-links">
+                <div class="social-links-footer">
                     <a href="https://github.com/HusainAziz2308/" target="_blank" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
                     <a href="YOUR_LINKEDIN_URL" target="_blank" aria-label="LinkedIn Profile"><i class="fab fa-linkedin-in"></i></a>
                     <a href="https://www.instagram.com/aziz.husain23/" target="_blank" aria-label="Instagram Profile"><i class="fab fa-instagram"></i></a>
                     <a href="YOUR_TWITTER_X_URL" target="_blank" aria-label="X (Twitter) Profile"><i class="fab fa-x-twitter"></i></a>
                 </div>
-
-                <p>&copy; <span id="current-year"></span> Aziz Husain. All
-                    Rights Reserved.</p>
             </div>
-        </footer>
-
-        <div id="image-modal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn">&times;</span>
-                <h3 id="modal-title"></h3>
-                <img id="modal-image" src alt="Full-size preview">
+            <footer>&copy; <span id="current-year"></span> AZIZ HUSAIN.</footer>
+        </section>
+        
+        <div id="project-modal" class="modal">
+            <div class="modal-content-custom">
+                <button class="close-btn-custom"><i class="fas fa-times"></i></button>
+                <div class="modal-body">
+                    <img id="modal-project-img" src="" alt="Project Image">
+                    <h3 id="modal-project-title">Project Title</h3>
+                    <p id="modal-project-category">Category</p>
+                    <p id="modal-project-description">Detailed description of the project goes here. Explain the challenge, your solution, and the technologies used.</p>
+                    <a id="modal-project-link" href="#" target="_blank" class="modal-link-button">View Live Project</a>
+                </div>
             </div>
         </div>
 
-        <script src="script/js/script.js"></script>
+        <script src="script/script.js"></script>
     </body>
 </html>

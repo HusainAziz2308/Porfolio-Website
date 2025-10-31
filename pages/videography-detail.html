@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Aziz Husain - Videography: Short Film</title>
+        <!-- Relative paths for resources -->
+        <link rel="stylesheet" href="../style/style.css"> 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <style>
+            /* Ensure the embedded video is responsive */
+            .video-container {
+                position: relative;
+                width: 100%;
+                padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+                height: 0;
+                overflow: hidden;
+                border-radius: 8px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            }
+            .video-container iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+        </style>
+    </head>
+    <body>
+
+        <header class="fixed-nav scrolled">
+            <h1 class="logo">AZIZ HUSAIN</h1>
+            <nav class="desktop-links">
+                <!-- Links back to the main portfolio page -->
+                <a href="../index.html#about" data-section="about">About</a>
+                <a href="../index.html#work" data-section="work">Work</a>
+                <a href="../index.html#contact" data-section="contact">Contact</a>
+            </nav>
+            <button class="menu-toggle" aria-label="Toggle navigation menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </header>
+        
+        <nav class="mobile-nav-overlay">
+            <button class="close-menu-toggle"><i class="fas fa-times"></i></button>
+            <ul>
+                <li><a href="../index.html#about">About</a></li>
+                <li><a href="../index.html#work">Coding & Visuals</a></li>
+                <li><a href="../index.html#contact">Get In Touch</a></li>
+            </ul>
+        </nav>
+
+        <section id="project-detail" class="full-panel" style="min-height: 100vh; padding-top: 100px; background-color: var(--color-dark);">
+            <div class="content-wrapper" style="max-width: 1000px; text-align: left; margin: 0 auto;">
+                
+                <p class="subtitle" style="color: var(--color-accent); margin-bottom: 10px; font-weight: 600;">VIDEOGRAPHY & FILM</p>
+                <h2 class="title-l" style="font-size: 4.5rem; color: var(--color-light);">A SHORT FILM ON CAMPUS LIFE</h2>
+                
+                <div class="project-media" style="margin: 40px 0;">
+                    <!-- Embed the video here using the 16:9 responsive container -->
+                    <div class="video-container">
+                        <iframe 
+                            src="https://www.youtube.com/embed/Fq9ZDNtSjSk?controls=1" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <div class="project-info" style="display: grid; grid-template-columns: 1fr 2fr; gap: 50px; margin-top: 50px; color: var(--color-light);">
+                    
+                    <div class="details-left">
+                        <h3 style="font-size: 2rem; color: var(--color-light); margin-bottom: 20px;">PRODUCTION ROLE</h3>
+                        <p style="font-size: 1.1rem; color: #ccc; line-height: 1.6;">
+                            For this short film, I served as the **Director of Photography and Lead Editor**. My focus was establishing the visual tone, ensuring consistent color grading, and structuring the narrative flow in post-production.
+                        </p>
+                        
+                        <div class="links" style="margin-top: 30px;">
+                            <a href="https://www.youtube.com/watch?v=Fq9ZDNtSjSk" target="_blank" class="cta-button" style="padding: 10px 20px; font-size: 0.9rem;">Watch on YouTube</a>
+                        </div>
+                    </div>
+
+                    <div class="details-right">
+                        <h3 style="font-size: 2rem; color: var(--color-light); margin-bottom: 20px;">EQUIPMENT & SOFTWARE</h3>
+                        <ul style="list-style: none; display: flex; flex-wrap: wrap; gap: 15px;">
+                            <li class="tech-tag">DSLR/Mirrorless</li>
+                            <li class="tech-tag">Adobe Premiere Pro</li>
+                            <li class="tech-tag">DaVinci Resolve (Grading)</li>
+                            <li class="tech-tag">Gimbal Operation</li>
+                        </ul>
+                        
+                        <h3 style="font-size: 2rem; color: var(--color-light); margin-top: 40px; margin-bottom: 20px;">CHALLENGES & LESSONS</h3>
+                        <p style="font-size: 1.1rem; color: #ccc; line-height: 1.6;">
+                            The tight schedule forced efficient planning and minimal retakes. A key lesson learned was the critical importance of sound design in conveying atmosphere, which significantly enhanced the final viewing experience.
+                        </p>
+                    </div>
+                </div>
+
+                <a href="../index.html#work" class="cta-button" style="margin-top: 80px; margin-bottom: 50px; display: inline-block;">← Back to All Work</a>
+            </div>
+        </section>
+
+        <footer style="position: relative; background: var(--color-dark); padding: 20px 0; text-align: center;">
+             <div class="social-links-footer" style="margin-bottom: 0;">
+                <a href="https://github.com/HusainAziz2308/" target="_blank" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
+                <a href="YOUR_LINKEDIN_URL" target="_blank" aria-label="LinkedIn Profile"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.instagram.com/aziz.husain23/" target="_blank" aria-label="Instagram Profile"><i class="fab fa-instagram"></i></a>
+                <a href="YOUR_TWITTER_X_URL" target="_blank" aria-label="X (Twitter) Profile"><i class="fab fa-x-twitter"></i></a>
+            </div>
+            &copy; <span id="current-year-detail"></span> AZIZ HUSAIN.
+        </footer>
+
+        <script src="../script/script.js"></script>
+        <script>
+            document.getElementById('current-year-detail').textContent = new Date().getFullYear();
+        </script>
+    </body>
+</html>
