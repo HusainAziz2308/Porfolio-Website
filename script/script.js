@@ -2,21 +2,27 @@
  * Aziz Husain Portfolio - Custom JavaScript & Lenis Scroll Setup
  * This script initializes the Lenis smooth scrolling library, the
  * Request Animation Frame (RAF) loop, and the Three.js 3D hero visualization.
+ * * FIX: Moved updateProjectParallax from the global RAF loop to the Lenis scroll
+ * event listener to prevent forced layout calculations on every frame.
  */
 
 // --- 1. GLOBAL THREE.JS VARIABLES ---
 let scene, camera, renderer, mesh, canvas;
 let mouseX = 0, mouseY = 0;
+// Note: windowHalfY is recalculated on resize for responsiveness
 let windowHalfX = window.innerWidth / 2;
-let windowHalfY = window.innerHeight / 2;
+let windowHalfY = window.innerHeight / 2; 
 // Store project items globally so they can be accessed by the parallax function
 let projectItems = []; 
 
 // --- 2. LENIS SMOOTH SCROLL INITIALIZATION ---
 
 // Initialize Lenis with smooth, high-performance settings
+// Loading external library: https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.45/dist/lenis.min.js
 const lenis = new Lenis({
     duration: 1.2,
+    wrapper: document.querySelector('#lenis-wrapper'), // Let Lenis know about the wrapper
+    content: document.querySelector('#lenis-content'), // ...and the content
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
     orientation: 'vertical',
     gestureOrientation: 'vertical',
@@ -30,6 +36,12 @@ const lenis = new Lenis({
  * Three.js Setup Function
  */
 function initThreeJS() {
+    // Check if the required library (Three.js) is loaded
+    if (typeof THREE === 'undefined') {
+        console.error("Three.js not loaded. Cannot initialize 3D scene.");
+        return;
+    }
+    
     canvas = document.getElementById('main-3d-canvas');
     if (!canvas) return;
 
@@ -83,6 +95,9 @@ function onWindowResize() {
     windowHalfY = window.innerHeight / 2;
     
     if (camera) {
+        // Update FOV for mobile if necessary, though this logic is usually only needed once on init
+        const fov = window.innerWidth > 768 ? 60 : 75;
+        camera.fov = fov; 
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
     }
@@ -96,6 +111,7 @@ function onWindowResize() {
  * Handle Mouse Movement for Parallax/Rotation
  */
 function onDocumentMouseMove(event) {
+    // Map mouse position to a small rotation value
     mouseX = (event.clientX - windowHalfX) * 0.005;
     mouseY = (event.clientY - windowHalfY) * 0.005;
 }
@@ -106,6 +122,7 @@ function onDocumentMouseMove(event) {
  * Updates the mesh position, rotation, and renders the scene.
  */
 function animateThree() {
+    // Ensure Three.js objects exist before animating
     if (!mesh || !renderer || !camera) return;
 
     // 1. Mesh Rotation/Update
@@ -116,6 +133,7 @@ function animateThree() {
     const targetRotationX = -mouseY * 0.5;
     const targetRotationY = -mouseX * 0.5;
 
+    // Lerp (Linear Interpolation) for smooth rotation transition
     mesh.rotation.x += (targetRotationX - mesh.rotation.x) * 0.05;
     mesh.rotation.y += (targetRotationY - mesh.rotation.y) * 0.05;
 
@@ -127,21 +145,23 @@ function animateThree() {
 /**
  * Function to handle the parallax effect for project items.
  * Uses getBoundingClientRect to determine the item's position relative to the viewport.
+ * This is now called ONLY when the Lenis scroll value changes.
  */
 function updateProjectParallax() {
     projectItems.forEach(item => {
         // Only run for items currently in or near the viewport for performance
         const rect = item.getBoundingClientRect();
+        // Check if item is outside the viewport (top below 0 or bottom above window.innerHeight)
         if (rect.top > window.innerHeight || rect.bottom < 0) return;
 
         // Calculate the center position of the item relative to the viewport
         const center = rect.top + rect.height / 2;
         
-        // Calculate the distance from the viewport center
-        const distance = center - window.innerHeight / 2;
+        // Calculate the distance from the viewport center (windowHalfY is the center)
+        const distance = center - windowHalfY;
         
         // Parallax strength factor (0.2 is subtle)
-        // We use a positive factor so the image moves opposite to the scroll direction
+        // This calculates the necessary Y-translation to make it appear to scroll slower
         const parallaxStrength = distance * 0.2; 
         
         const img = item.querySelector('img');
@@ -155,18 +175,18 @@ function updateProjectParallax() {
 
 /**
  * Request Animation Frame (RAF) Loop (Single, Unified Loop)
- * This loop updates BOTH Lenis and the Three.js scene every frame.
+ * This loop updates ONLY Lenis and the Three.js scene every frame.
  */
 function raf(time) {
     lenis.raf(time);
     
-    // Integrate Three.js animation here
+    // Integrate Three.js animation here (must run on every frame for smooth rotation)
     if (renderer) {
         animateThree();
     }
 
-    // Since Lenis controls scroll, this is where we call the image parallax
-    updateProjectParallax();
+    // IMPORTANT FIX: updateProjectParallax is NO LONGER called here.
+    // It is now called in lenis.on('scroll', ...)
 
     requestAnimationFrame(raf);
 }
@@ -181,11 +201,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Start Lenis listening for scroll inputs.
     lenis.start();
     
-    // Initialize the 3D scene
+    // Initialize the 3D scene. This needs the external three.min.js library loaded.
     initThreeJS();
 
     // Cache project items for parallax function
     projectItems = document.querySelectorAll('.project-item');
+    
+    // Recalculate windowHalfY based on initial screen size
+    windowHalfY = window.innerHeight / 2;
 
     // 3.1. Element References (Cached for efficient access)
     const currentYearEl = document.getElementById('current-year-main');
@@ -196,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuToggleBtn = document.querySelector('.menu-toggle');
     const menuCloseBtn = document.querySelector('.close-menu-toggle');
     const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
-    const mobileNavLinks = mobileNavOverlay.querySelectorAll('a');
+    const mobileNavLinks = mobileNavOverlay ? mobileNavOverlay.querySelectorAll('a') : [];
     
     // Set Footer Year
     if (currentYearEl) {
@@ -205,12 +228,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // --- Mobile Menu Toggle Logic ---
     function toggleMobileMenu(isOpen) {
-        if (isOpen) {
-            mobileNavOverlay.classList.add('open');
-            lenis.stop(); // Stop Lenis from scrolling the background
-        } else {
-            mobileNavOverlay.classList.remove('open');
-            lenis.start(); // Resume background scrolling
+        if (mobileNavOverlay) {
+            if (isOpen) {
+                mobileNavOverlay.classList.add('open');
+                lenis.stop(); // Stop Lenis from scrolling the background
+            } else {
+                mobileNavOverlay.classList.remove('open');
+                lenis.start(); // Resume background scrolling
+            }
         }
     }
 
@@ -227,15 +252,15 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const targetId = link.getAttribute('href');
             // Check if the link is an internal anchor link (starts with #)
-            if (targetId.startsWith('#')) {
+            if (targetId && targetId.startsWith('#')) {
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     toggleMobileMenu(false);
                     // Use Lenis to scroll to the section
                     lenis.scrollTo(targetElement, { offset: -80, duration: 1 });
                 }
-            } else {
-                // For links like "../index.html#section", just navigate
+            } else if (targetId) {
+                // For external or relative links, just navigate
                 toggleMobileMenu(false);
                 window.location.href = targetId;
             }
@@ -261,6 +286,10 @@ document.addEventListener('DOMContentLoaded', () => {
             scrollPrompt.style.opacity = Math.max(0, opacity);
         }
         
+        // --- FIX IMPLEMENTED HERE: Project Parallax Update ---
+        updateProjectParallax();
+        // ---------------------------------------------------
+
         // 3.3. Three.js Scroll Parallax (Move the 3D shape opposite to scroll)
         if (mesh) {
             // Apply a slight vertical shift to the mesh as the user scrolls

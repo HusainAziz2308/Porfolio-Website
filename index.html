@@ -5,22 +5,671 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aziz Husain - Programmer & Visual Artist</title>
     
-    <!-- External Libraries and Your Styles -->
+    <!-- External Libraries -->
     <!-- 1. Three.js for 3D/Canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <!-- 2. Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- 3. Lenis for Smooth Scrolling -->
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.45/dist/lenis.min.js"></script>
+    <!-- 4. Tailwind CSS (Used for Loader styles) -->
+    <script src="https://cdn.tailwindcss.com"></script> 
     
-    <!-- Your main stylesheet -->
-    <link rel="stylesheet" href="style/style.css">
+    <style>
+        /* style/style.css - CONSOLIDATED */
+        /* ------------------------------------------- */
+        /* 1. Global Variables and Resets */
+        /* ------------------------------------------- */
+        :root {
+            /* Define Color Palette - Dark, high-contrast theme */
+            --color-dark: #0A0A0A; /* Deep Charcoal/Black for background */
+            --color-light: #F5F5F5; /* Near-White for text */
+            --color-accent: #FF3B00; /* Bright Orange/Red for key highlights (Lando's McLaren color) */
+            --color-medium-gray: #777777; /* For subtle text/dividers */
 
+            /* Typography */
+            --font-primary: 'Inter', sans-serif;
+            --font-size-body: 1.15rem;
+            --font-size-h1: 8vw; /* Fluid H1 for big impact */
+            --font-size-h2: 5rem;
+            --font-size-h3: 2rem;
+
+            /* Spacing */
+            --spacing-lg: 100px;
+            --spacing-md: 40px;
+        }
+
+        /* Load Inter font (simulated via import) */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            list-style: none;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--color-dark);
+        }
+
+        body {
+            font-family: var(--font-primary);
+            color: var(--color-light);
+            line-height: 1.6;
+            background-color: var(--color-dark);
+            /* Prevent default scroll, Lenis will manage it */
+            overflow: hidden; 
+        }
+
+        /* Lenis requires this specific structure for proper scroll hijacking */
+        #lenis-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        #lenis-content {
+            position: relative;
+            overflow: visible;
+        }
+
+        /* ------------------------------------------- */
+        /* 1.5. SCROLL REVEAL ANIMATION CLASSES */
+        /* ------------------------------------------- */
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1), transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+            will-change: opacity, transform;
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered transition delays for project items */
+        .project-grid > a:nth-child(1) { transition-delay: 0.1s; }
+        .project-grid > a:nth-child(2) { transition-delay: 0.2s; }
+        .project-grid > a:nth-child(3) { transition-delay: 0.3s; }
+        .project-grid > a:nth-child(4) { transition-delay: 0.4s; }
+
+        /* Staggered transition delays for media items */
+        .media-showcase > a:nth-child(1) { transition-delay: 0.1s; }
+        .media-showcase > a:nth-child(2) { transition-delay: 0.2s; }
+        .media-showcase > a:nth-child(3) { transition-delay: 0.3s; }
+
+        /* Generic delay for text elements within a section */
+        .content-section .subtitle, 
+        .content-section .section-h2, 
+        .content-section .section-description {
+            transition-delay: 0.1s;
+        }
+
+        /* ------------------------------------------- */
+        /* 1.6. LOADING OVERLAY STYLES (FROM loading_ui.html) */
+        /* ------------------------------------------- */
+
+        /* Custom Keyframes for the dot animation */
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1.0);
+                opacity: 1;
+            }
+        }
+
+        .dot-animation > div {
+            width: 12px;
+            height: 12px;
+            /* Using portfolio's accent color: var(--color-accent) */
+            background-color: var(--color-accent); 
+            border-radius: 50%;
+            margin: 0 4px;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .dot-animation > div:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .dot-animation > div:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        /* The overlay should cover the entire viewport */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            /* Initially hidden, will be shown by JS */
+            display: none;
+            /* Ensures it covers the entire viewport */
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ------------------------------------------- */
+        /* 2. Typography and Utility Classes */
+        /* ------------------------------------------- */
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            color: var(--color-light);
+        }
+
+        h1, h2, h3 {
+            font-weight: 900;
+            line-height: 1.1;
+        }
+
+        h1 { font-size: var(--font-size-h1); }
+        h2 { font-size: var(--font-size-h2); }
+        h3 { font-size: var(--font-size-h3); }
+
+        /* Anchor styles */
+        a {
+            color: var(--color-light);
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        a:hover {
+            color: var(--color-accent);
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        /* Accent text/Subtitle */
+        .subtitle {
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+        }
+
+        /* Call To Action Buttons (for high contrast) */
+        .cta-button {
+            display: inline-block;
+            padding: 12px 30px;
+            border: 2px solid var(--color-accent);
+            background-color: var(--color-accent);
+            color: var(--color-dark);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: var(--color-dark);
+            color: var(--color-accent);
+            transform: translateY(-2px);
+        }
+
+        /* ------------------------------------------- */
+        /* 3. Navigation and Header */
+        /* ------------------------------------------- */
+
+        .fixed-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px var(--spacing-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            /* Use a subtle transparent background */
+            background: rgba(10, 10, 10, 0.8); 
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .desktop-links a {
+            margin-left: var(--spacing-md);
+            font-weight: 600;
+        }
+
+        /* Menu Toggle Button (Visible on mobile, hidden on desktop) */
+        .menu-toggle, .close-menu-toggle {
+            display: none; /* Hidden by default, only show on mobile */
+            background: none;
+            border: none;
+            color: var(--color-light);
+            font-size: 1.8rem;
+            cursor: pointer;
+            z-index: 1001;
+            transition: color 0.3s ease;
+        }
+
+        .menu-toggle:hover, .close-menu-toggle:hover {
+            color: var(--color-accent);
+        }
+
+
+        /* --- MOBILE MENU OVERLAY STYLES --- */
+        .mobile-nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-dark);
+            z-index: 999;
+            /* Transition from the left */
+            transform: translateX(-100%);
+            transition: transform 0.5s cubic-bezier(0.86, 0, 0.07, 1); 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .mobile-nav-overlay.open {
+            transform: translateX(0);
+        }
+
+        .mobile-nav-overlay .close-menu-toggle {
+            position: absolute;
+            top: 30px;
+            right: var(--spacing-md);
+            display: block; /* Always visible when the overlay is open */
+        }
+
+        .mobile-nav-overlay ul {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .mobile-nav-overlay a {
+            font-size: 3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .mobile-nav-overlay a:hover {
+            color: var(--color-accent);
+        }
+
+        /* ------------------------------------------- */
+        /* 4. HERO SECTION STYLES (3D Visual) */
+        /* ------------------------------------------- */
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; 
+        }
+
+        .visual-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; 
+            /* Ensures the canvas doesn't introduce scroll issues */
+            touch-action: none; 
+        }
+
+        .hero-title-container {
+            position: relative;
+            text-align: center;
+            z-index: 10;
+            pointer-events: none; /* Allows mouse events to pass through to the canvas/body */
+            transition: opacity 0.5s, transform 0.5s;
+            will-change: opacity, transform;
+        }
+
+        .hero-h1 {
+            font-size: var(--font-size-h1);
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+        }
+        .hero-h1-sub {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--color-medium-gray);
+            margin-top: -20px;
+        }
+        .dot {
+            color: var(--color-accent);
+        }
+
+        .scroll-down-prompt {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-medium-gray);
+            letter-spacing: 0.1em;
+            animation: bounce-prompt 2s infinite; /* Use a different bounce name */
+            z-index: 10;
+        }
+
+        @keyframes bounce-prompt {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translate(-50%, 0);
+            }
+            40% {
+                transform: translate(-50%, -10px);
+            }
+            60% {
+                transform: translate(-50%, -5px);
+            }
+        }
+
+        /* ------------------------------------------- */
+        /* 5. MAIN CONTENT & GRID STYLES */
+        /* ------------------------------------------- */
+
+        .content-section {
+            padding: var(--spacing-lg) 0;
+            min-height: 100vh;
+        }
+
+        .section-h2 {
+            margin: 15px 0 30px 0;
+            text-transform: uppercase;
+        }
+
+        .section-description {
+            max-width: 700px;
+            font-size: var(--font-size-body);
+            color: var(--color-medium-gray);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        /* --- PROGRAMMING PROJECT GRID --- */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Two columns on desktop */
+            gap: 50px;
+        }
+
+        .project-item {
+            display: block;
+            height: 400px; 
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            background-color: #1a1a1a;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        /* Styles for the image inside the project item to enable parallax */
+        .project-item img {
+            position: absolute;
+            top: -10%; /* Start the image 10% higher to center it in the 120% height window */
+            left: 0;
+            width: 100%;
+            height: 120%; /* Make it taller than the container for the parallax effect */
+            object-fit: cover;
+            will-change: transform; /* Performance optimization for transformation */
+            /* Visual style enhancement */
+            filter: brightness(0.6); 
+            transition: filter 0.3s ease;
+        }
+
+
+        .project-item:hover {
+            box-shadow: 0 0 40px rgba(255, 59, 0, 0.4); /* Glowing accent shadow on hover */
+            transform: translateY(-5px);
+        }
+
+        .project-item:hover img {
+            filter: brightness(0.9);
+        }
+
+        .project-item:nth-child(2n) {
+            /* Staggered layout - push every second item down slightly */
+            margin-top: 50px; 
+        }
+
+        .project-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+            z-index: 20; /* Ensure overlay text is above the image */
+        }
+
+        .project-overlay h3 {
+            font-size: 1.5rem;
+            color: var(--color-light);
+            margin-bottom: 5px;
+        }
+        .project-overlay p {
+            color: var(--color-accent);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+
+        /* --- VISUAL ARTS SHOWCASE (More Image Focused) */
+        .media-showcase {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Three columns on desktop */
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .media-item {
+            display: block;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .media-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+            filter: brightness(0.8) grayscale(0.2);
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.5, 1), filter 0.6s ease;
+        }
+
+        .media-item:hover img {
+            transform: scale(1.05);
+            filter: brightness(1) grayscale(0);
+        }
+
+        .overlay-text {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--color-light);
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 20; /* Ensure overlay text is above the image */
+        }
+
+        .media-item:hover .overlay-text {
+            opacity: 1;
+        }
+
+        /* --- CONTACT SECTION --- */
+        .contact-section {
+            padding-top: 100px;
+            padding-bottom: 150px;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+        .contact-details p {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: var(--color-medium-gray);
+            max-width: 600px;
+        }
+        .signature-placeholder {
+            font-family: 'Times New Roman', serif;
+            font-size: 3rem;
+            font-style: italic;
+            font-weight: 300;
+            text-align: right;
+            color: var(--color-light);
+        }
+        .dot-accent {
+            color: var(--color-accent);
+        }
+
+        .margin-top-lg {
+            margin-top: 60px;
+        }
+
+        /* ------------------------------------------- */
+        /* 7. Footer and General Layout */
+        /* ------------------------------------------- */
+
+        .site-footer {
+            padding: var(--spacing-md) 0;
+            text-align: center;
+            background-color: var(--color-dark);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-links-footer a {
+            font-size: 1.8rem;
+            margin: 0 15px;
+            color: var(--color-medium-gray);
+            display: inline-block;
+        }
+
+        .social-links-footer a:hover {
+            color: var(--color-light);
+            transform: scale(1.1);
+        }
+
+        .copyright {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: var(--color-medium-gray);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+
+        /* ------------------------------------------- */
+        /* 8. Mobile Responsiveness */
+        /* ------------------------------------------- */
+
+        @media (max-width: 1024px) {
+            :root {
+                --font-size-h1: 12vw;
+                --font-size-h2: 3rem;
+                --spacing-lg: 60px;
+                --spacing-md: 20px;
+            }
+
+            /* Show the menu toggle button */
+            .menu-toggle {
+                display: block;
+            }
+
+            .project-info-grid {
+                grid-template-columns: 1fr; /* Stack columns */
+                gap: 50px;
+            }
+            
+            .desktop-links {
+                display: none; /* Hide desktop links on mobile/tablet */
+            }
+            
+            /* Main Page adjustments */
+            .project-grid {
+                grid-template-columns: 1fr; /* Single column on mobile */
+                gap: 30px;
+            }
+            .project-item:nth-child(2n) {
+                margin-top: 0; /* Remove staggering on mobile */
+            }
+            .media-showcase {
+                grid-template-columns: 1fr; /* Single column on mobile */
+            }
+            .contact-grid {
+                grid-template-columns: 1fr; /* Stack contact elements */
+            }
+            .signature-placeholder {
+                text-align: left;
+                margin-top: 40px;
+            }
+            
+            .hero-h1-sub {
+                font-size: 1rem;
+            }
+            .hero-h1 {
+                padding: 0 10px;
+            }
+        }
+    </style>
 </head>
 <body>
+    
+    <!-- 
+        LOADING OVERLAY COMPONENT (Integrated from loading_ui.html) 
+        This div covers the entire screen and is designed to block interaction 
+        while necessary assets (like Three.js and Lenis) initialize.
+    -->
+    <div id="loading-overlay" class="loading-overlay w-full h-full flex items-center justify-center bg-gray-900/80 transition-opacity duration-300">
+        <div class="text-center">
+            
+            <!-- Three-Dot Pulsing Animation -->
+            <div class="dot-animation flex justify-center items-center mb-4">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
 
+            <p class="text-xl font-medium text-white tracking-wider animate-pulse">
+                Loading assets...
+            </p>
+        </div>
+    </div>
+    
     <!-- Header Navigation -->
     <header class="fixed-nav" data-scroll-section>
         <h1 class="logo"><a href="#hero">AZIZ HUSAIN</a></h1>
         <nav class="desktop-links">
+            <!-- Ensure these are internal links for smooth scroll -->
             <a href="#programming" data-section="programming">Programming</a>
             <a href="#visual-arts" data-section="visual-arts">Visual Arts</a>
             <a href="#contact" data-section="contact">Contact</a>
@@ -42,131 +691,449 @@
     </nav>
 
 
-    <!--
-        The main container for the whole page.
-        Lenis controls this scrollable area.
-    -->
-    <main data-scroll-container> 
-        
-        <!-- ============================================== -->
-        <!-- 1. HERO SECTION (The 3D Visual) -->
-        <!-- ============================================== -->
-        <section id="hero" class="hero-section" data-scroll-section>
+    <!-- Lenis Scroll Wrapper -->
+    <div id="lenis-wrapper">
+        <main id="lenis-content"> 
             
-            <!-- This is where the Three.js Canvas will be rendered -->
-            <canvas id="main-3d-canvas" class="visual-canvas"></canvas>
-
-            <div id="hero-title" class="hero-title-container">
-                <h1 class="hero-h1">AZIZ HUSAIN<span class="dot">.</span></h1>
-                <p class="hero-h1-sub">FRONTEND & VISUAL ARTIST</p>
-            </div>
-
-            <!-- Scroll prompt -->
-            <p class="scroll-down-prompt">Scroll to Explore Work</p>
-
-        </section>
-
-        <!-- ============================================== -->
-        <!-- 2. MAIN CONTENT SECTIONS -->
-        <!-- ============================================== -->
-        
-        <!-- The "Programmer" Section - Focus on Frontend UI -->
-        <section id="programming" class="content-section" data-scroll-section>
-            <div class="content-wrapper">
-                <p class="subtitle">CODE & LOGIC</p>
-                <h2 class="section-h2">Frontend UI Master</h2>
-                <p class="section-description">Combining design passion with clean, component-driven code. Projects focus on performance, scalability, and stunning user experiences.</p>
+            <!-- ============================================== -->
+            <!-- 1. HERO SECTION (The 3D Visual) -->
+            <!-- ============================================== -->
+            <section id="hero" class="hero-section" data-scroll-section>
                 
-                <!-- Project Grid Placeholder -->
-                <div class="project-grid">
-                    <!-- Project Item 1: Link to the new detail page -->
-                    <a href="pages/project-detail.html" class="project-item coding-project" data-scroll data-scroll-speed="1">
-                        <!-- Placeholder image for parallax -->
-                        <img src="https://placehold.co/800x600/181818/FF3B00?text=Project+One+Visual" alt="Project One Visual" loading="lazy">
-                        <div class="project-overlay">
-                            <h3>Responsive Layout System</h3>
-                            <p>React / Tailwind CSS</p>
-                        </div>
-                    </a>
-                    
-                    <!-- Project Item 2: Placeholder for another coding project -->
-                    <a href="pages/project-detail.html" class="project-item coding-project" data-scroll data-scroll-speed="-0.5">
-                        <!-- Placeholder image for parallax -->
-                        <img src="https://placehold.co/800x600/181818/F5F5F5?text=Data+Dashboard+Visual" alt="Project Two Visual" loading="lazy">
-                        <div class="project-overlay">
-                            <h3>Interactive Data Dashboard</h3>
-                            <p>Next.js / D3.js</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </section>
+                <!-- This is where the Three.js Canvas will be rendered -->
+                <canvas id="main-3d-canvas" class="visual-canvas"></canvas>
 
-        <!-- The "Visual Arts" Section - Photography, Video, Design -->
-        <section id="visual-arts" class="content-section visual-section" data-scroll-section>
-             <div class="content-wrapper">
-                <p class="subtitle">LIGHT & SHADOW</p>
-                <h2 class="section-h2 animated-text-wrapper">Visual Storyteller</h2>
-                
-                <div class="media-showcase">
-                    <!-- Media Item 1: Photography -->
-                    <a href="pages/divisi-media-detail.html" class="media-item" data-scroll data-scroll-speed="1.2">
-                        <img src="https://placehold.co/800x600/111111/AAAAAA?text=Photography+Portfolio" alt="Photography Project">
-                        <span class="overlay-text">Photography & Portraiture</span>
-                    </a>
-                    
-                    <!-- Media Item 2: Videography -->
-                    <a href="pages/video-project-detail.html" class="media-item" data-scroll data-scroll-speed="0.8">
-                        <img src="https://placehold.co/800x450/111111/AAAAAA?text=Videography+Reel" alt="Videography Project">
-                        <span class="overlay-text">Videography & Editing</span>
-                    </a>
-                    
-                    <!-- Media Item 3: Poster Design -->
-                    <a href="pages/design-project-detail.html" class="media-item" data-scroll data-scroll-speed="1.1">
-                        <img src="https://placehold.co/800x800/111111/AAAAAA?text=Poster+Design" alt="Poster Design Project">
-                        <span class="overlay-text">Graphic & Poster Design</span>
-                    </a>
+                <div id="hero-title" class="hero-title-container">
+                    <h1 class="hero-h1">AZIZ HUSAIN<span class="dot">.</span></h1>
+                    <p class="hero-h1-sub">FRONTEND & VISUAL ARTIST</p>
                 </div>
-            </div>
-        </section>
-        
-        <!-- The "About/Contact" Section -->
-        <section id="contact" class="content-section contact-section" data-scroll-section>
-            <div class="content-wrapper">
-                <p class="subtitle">GET IN TOUCH</p>
-                <h2 class="section-h2">Let's Build Something Beautiful</h2>
-                <div class="contact-grid">
-                    <div class="contact-details">
-                        <p>I am currently open for exciting freelance projects, especially those that blend complex frontend engineering with strong visual communication. Whether it's an interactive web application or a striking visual campaign, I'm ready to collaborate.</p>
-                        <a href="mailto:your@email.com" class="cta-button primary-accent-btn margin-top-lg">Email Me Now</a>
-                    </div>
-                    <!-- Placeholder for the Rive/SVG signature animation -->
-                    <div id="signature-animation">
-                        <!-- We will put a simple text placeholder here for now -->
-                        <h3 class="signature-placeholder">Aziz Husain<span class="dot-accent">_</span></h3>
+
+                <!-- Scroll prompt -->
+                <p class="scroll-down-prompt">Scroll to Explore Work</p>
+
+            </section>
+
+            <!-- ============================================== -->
+            <!-- 2. MAIN CONTENT SECTIONS -->
+            <!-- ============================================== -->
+            
+            <!-- The "Programmer" Section - Focus on Frontend UI -->
+            <section id="programming" class="content-section" data-scroll-section>
+                <div class="content-wrapper">
+                    <!-- Apply scroll-reveal to individual text elements -->
+                    <p class="subtitle scroll-reveal">CODE & LOGIC</p>
+                    <h2 class="section-h2 scroll-reveal">Frontend UI Master</h2>
+                    <p class="section-description scroll-reveal">Combining design passion with clean, component-driven code. Projects focus on performance, scalability, and stunning user experiences.</p>
+                    
+                    <!-- Project Grid Content -->
+                    <div class="project-grid">
+                        <!-- Project Item 1: Responsive Layout System -->
+                        <a href="#programming" class="project-item coding-project scroll-reveal" data-scroll data-scroll-speed="1">
+                            <!-- Placeholder image for parallax -->
+                            <img src="https://placehold.co/800x600/181818/FF3B00?text=Project+One+Visual" alt="Responsive Layout System Visual" loading="lazy">
+                            <div class="project-overlay">
+                                <h3>Responsive Layout System</h3>
+                                <p>React / Tailwind CSS</p>
+                            </div>
+                        </a>
+                        
+                        <!-- Project Item 2: Interactive Data Dashboard -->
+                        <a href="#programming" class="project-item coding-project scroll-reveal" data-scroll data-scroll-speed="-0.5">
+                            <!-- Placeholder image for parallax -->
+                            <img src="https://placehold.co/800x600/181818/F5F5F5?text=Data+Dashboard+Visual" alt="Data Dashboard Visual" loading="lazy">
+                            <div class="project-overlay">
+                                <h3>Interactive Data Dashboard</h3>
+                                <p>Next.js / D3.js</p>
+                            </div>
+                        </a>
+                         <!-- Project Item 3: E-commerce Checkout Flow -->
+                        <a href="#programming" class="project-item coding-project scroll-reveal" data-scroll data-scroll-speed="0.8">
+                            <img src="https://placehold.co/800x600/181818/00FFDD?text=E-commerce+UX" alt="E-commerce UX Visual" loading="lazy">
+                            <div class="project-overlay">
+                                <h3>High-Conversion Checkout Flow</h3>
+                                <p>Angular / RxJS</p>
+                            </div>
+                        </a>
+                        
+                        <!-- Project Item 4: Real-time Chat Application -->
+                        <a href="#programming" class="project-item coding-project scroll-reveal" data-scroll data-scroll-speed="-1.2">
+                            <img src="https://placehold.co/800x600/181818/FF00AA?text=Chat+App+Visual" alt="Chat Application Visual" loading="lazy">
+                            <div class="project-overlay">
+                                <h3>Real-time Chat & Notifications</h3>
+                                <p>Vue.js / Firebase</p>
+                            </div>
+                        </a>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- 4. Footer -->
-        <footer class="site-footer" data-scroll-section>
-             <div class="content-wrapper">
-                <div class="social-links-footer">
-                    <a href="https://github.com/HusainAziz2308/" target="_blank" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
-                    <a href="YOUR_LINKEDIN_URL" target="_blank" aria-label="LinkedIn Profile"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="https://www.instagram.com/aziz.husain23/" target="_blank" aria-label="Instagram Profile"><i class="fab fa-instagram"></i></a>
-                    <a href="YOUR_TWITTER_X_URL" target="_blank" aria-label="X (Twitter) Profile"><i class="fab fa-x-twitter"></i></a>
+            <!-- The "Visual Arts" Section - Photography, Video, Design -->
+            <section id="visual-arts" class="content-section visual-section" data-scroll-section>
+                   <div class="content-wrapper">
+                    <!-- Apply scroll-reveal to individual text elements -->
+                    <p class="subtitle scroll-reveal">LIGHT & SHADOW</p>
+                    <h2 class="section-h2 scroll-reveal">Visual Storyteller</h2>
+                    <p class="section-description scroll-reveal">My work behind the lens and on the canvas focuses on abstract concepts, high contrast, and dynamic composition, mirroring the complexity of my engineering projects.</p>
+                    
+                    <div class="media-showcase">
+                        <!-- Media Item 1: Photography -->
+                        <a href="#visual-arts" class="media-item scroll-reveal" data-scroll data-scroll-speed="1.2">
+                            <img src="https://placehold.co/800x600/111111/AAAAAA?text=Photography+Portfolio" alt="Photography Project">
+                            <span class="overlay-text">Photography & Portraiture</span>
+                        </a>
+                        
+                        <!-- Media Item 2: Videography -->
+                        <a href="#visual-arts" class="media-item scroll-reveal" data-scroll data-scroll-speed="0.8">
+                            <img src="https://placehold.co/800x450/111111/AAAAAA?text=Videography+Reel" alt="Videography Project">
+                            <span class="overlay-text">Videography & Editing</span>
+                        </a>
+                        
+                        <!-- Media Item 3: Poster Design -->
+                        <a href="#visual-arts" class="media-item scroll-reveal" data-scroll data-scroll-speed="1.1">
+                            <img src="https://placehold.co/800x800/111111/AAAAAA?text=Poster+Design" alt="Poster Design Project">
+                            <span class="overlay-text">Graphic & Poster Design</span>
+                        </a>
+                    </div>
                 </div>
-                <p class="copyright">&copy; <span id="current-year-main"></span> AZIZ HUSAIN. Built with passion.</p>
-             </div>
-        </footer>
+            </section>
+            
+            <!-- The "About/Contact" Section -->
+            <section id="contact" class="content-section contact-section" data-scroll-section>
+                <div class="content-wrapper">
+                    <!-- Apply scroll-reveal to individual text elements -->
+                    <p class="subtitle scroll-reveal">GET IN TOUCH</p>
+                    <h2 class="section-h2 scroll-reveal">Let's Build Something Beautiful</h2>
+                    <div class="contact-grid">
+                        <div class="contact-details scroll-reveal">
+                            <p>I am currently open for exciting freelance projects, especially those that blend complex frontend engineering with strong visual communication. Whether it's an interactive web application or a striking visual campaign, I'm ready to collaborate.</p>
+                            <a href="mailto:aziz.husain.dev@example.com" class="cta-button primary-accent-btn margin-top-lg">Email Me Now</a>
+                        </div>
+                        <!-- Placeholder for the Rive/SVG signature animation -->
+                        <div id="signature-animation" class="scroll-reveal">
+                            <h3 class="signature-placeholder">Aziz Husain<span class="dot-accent">_</span></h3>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    </main>
+            <!-- 4. Footer -->
+            <footer class="site-footer" data-scroll-section>
+                   <div class="content-wrapper">
+                    <div class="social-links-footer">
+                        <a href="https://github.com/HusainAziz2308/" target="_blank" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
+                        <a href="#" target="_blank" aria-label="LinkedIn Profile"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/aziz.husain23/" target="_blank" aria-label="Instagram Profile"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank" aria-label="X (Twitter) Profile"><i class="fab fa-x-twitter"></i></a>
+                    </div>
+                    <p class="copyright">&copy; <span id="current-year-main"></span> AZIZ HUSAIN. Built with passion.</p>
+                   </div>
+            </footer>
+
+        </main>
+    </div>
 
     <!-- 5. Scripts: Lenis Initialization and Custom JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.45/dist/lenis.min.js"></script>
-    <script src="script/script.js"></script>
+    <script>
+        // --- LOADER CONTROL FUNCTIONS (Integrated from loading_ui.html) ---
+        
+        /**
+         * Global function to display the loading overlay.
+         */
+        function showLoader() {
+            const overlay = document.getElementById('loading-overlay');
+            if (overlay) {
+                overlay.style.display = 'flex';
+                // Force a reflow to ensure the display change takes effect before the opacity transition
+                void overlay.offsetWidth; 
+                overlay.style.opacity = '1';
+            }
+        }
 
+        /**
+         * Global function to hide the loading overlay.
+         */
+        function hideLoader() {
+            const overlay = document.getElementById('loading-overlay');
+            if (overlay) {
+                overlay.style.opacity = '0';
+                // Use a timeout matching the CSS transition duration to hide the element completely after the fade-out
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 300); // 300ms matches the transition-opacity duration
+            }
+        }
+        
+        // Show the loader immediately upon script execution, before any heavy setup
+        showLoader();
+
+
+        // --- 1. GLOBAL THREE.JS VARIABLES ---
+        let scene, camera, renderer, mesh, canvas;
+        let mouseX = 0, mouseY = 0;
+        let windowHalfX = window.innerWidth / 2;
+        let windowHalfY = window.innerHeight / 2; 
+        let projectItems = []; 
+        let revealItems = []; 
+
+        // --- 2. LENIS SMOOTH SCROLL INITIALIZATION ---
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+            orientation: 'vertical',
+            gestureOrientation: 'vertical',
+            smoothWheel: true,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        });
+
+        // --- THREE.JS FUNCTIONS (Unchanged) ---
+        function initThreeJS() {
+            if (typeof THREE === 'undefined') {
+                console.error("Three.js not loaded. Cannot initialize 3D scene.");
+                return;
+            }
+            
+            canvas = document.getElementById('main-3d-canvas');
+            if (!canvas) return;
+
+            scene = new THREE.Scene();
+            const fov = window.innerWidth > 768 ? 60 : 75;
+            camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            renderer = new THREE.WebGLRenderer({ 
+                canvas: canvas, 
+                antialias: true, 
+                alpha: true
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            
+            const geometry = new THREE.IcosahedronGeometry(2, 0); 
+            const material = new THREE.MeshBasicMaterial({
+                color: 0xFF3B00, 
+                wireframe: true,
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5); 
+            scene.add(ambientLight);
+            
+            window.addEventListener('resize', onWindowResize, false);
+            document.addEventListener('mousemove', onDocumentMouseMove, false);
+        }
+
+        function onWindowResize() {
+            windowHalfX = window.innerWidth / 2;
+            windowHalfY = window.innerHeight / 2;
+            
+            if (camera) {
+                const fov = window.innerWidth > 768 ? 60 : 75;
+                camera.fov = fov; 
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+            }
+            
+            if (renderer) {
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+        }
+
+        function onDocumentMouseMove(event) {
+            mouseX = (event.clientX - windowHalfX) * 0.005;
+            mouseY = (event.clientY - windowHalfY) * 0.005;
+        }
+
+        function animateThree() {
+            if (!mesh || !renderer || !camera) return;
+
+            mesh.rotation.x += 0.001;
+            mesh.rotation.y += 0.002;
+            
+            const targetRotationX = -mouseY * 0.5;
+            const targetRotationY = -mouseX * 0.5;
+
+            mesh.rotation.x += (targetRotationX - mesh.rotation.x) * 0.05;
+            mesh.rotation.y += (targetRotationY - mesh.rotation.y) * 0.05;
+
+            renderer.render(scene, camera);
+        }
+
+        function updateProjectParallax() {
+            projectItems.forEach(item => {
+                const rect = item.getBoundingClientRect();
+                if (rect.top > window.innerHeight || rect.bottom < 0) return;
+
+                const center = rect.top + rect.height / 2;
+                const distance = center - windowHalfY;
+                
+                const parallaxStrength = distance * 0.2; 
+                
+                const img = item.querySelector('img');
+                if (img) {
+                    img.style.transform = `translateY(${parallaxStrength}px) translateZ(0)`;
+                }
+            });
+        }
+        
+        // --- SCROLL REVEAL ANIMATION LOGIC (Modularized) ---
+        
+        /**
+         * Function to handle the staggered scroll-in animation for elements.
+         */
+        function revealElementsOnScroll() {
+            const viewportThreshold = window.innerHeight * 0.85; // Trigger when 85% of the element is visible
+
+            revealItems.forEach(item => {
+                if (item.classList.contains('visible')) return;
+
+                const rect = item.getBoundingClientRect();
+                
+                // Check if the top of the element is within the visible viewport area
+                if (rect.top < viewportThreshold) {
+                    item.classList.add('visible');
+                }
+            });
+        }
+
+
+        /**
+         * Request Animation Frame (RAF) Loop (Single, Unified Loop)
+         */
+        function raf(time) {
+            lenis.raf(time);
+            
+            if (renderer) {
+                animateThree();
+            }
+
+            requestAnimationFrame(raf);
+        }
+
+        // Start the RAF loop immediately
+        requestAnimationFrame(raf);
+
+
+        // --- 3. CORE LOGIC (Runs after DOM is ready) ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lenis.start();
+            initThreeJS();
+
+            // Cache all elements needed for dynamic updates
+            projectItems = document.querySelectorAll('.project-item');
+            revealItems = document.querySelectorAll('.scroll-reveal'); // Cache reveal elements
+            
+            windowHalfY = window.innerHeight / 2;
+
+            const currentYearEl = document.getElementById('current-year-main');
+            const heroTitle = document.getElementById('hero-title');
+            const scrollPrompt = document.querySelector('.scroll-down-prompt');
+            
+            // Mobile Menu Logic (Unchanged)
+            const menuToggleBtn = document.querySelector('.menu-toggle');
+            const menuCloseBtn = document.querySelector('.close-menu-toggle');
+            const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+            const mobileNavLinks = mobileNavOverlay ? mobileNavOverlay.querySelectorAll('a') : [];
+            
+            if (currentYearEl) {
+                currentYearEl.textContent = new Date().getFullYear();
+            }
+            
+            function toggleMobileMenu(isOpen) {
+                if (mobileNavOverlay) {
+                    if (isOpen) {
+                        mobileNavOverlay.classList.add('open');
+                        lenis.stop();
+                    } else {
+                        mobileNavOverlay.classList.remove('open');
+                        lenis.start();
+                    }
+                }
+            }
+
+            if (menuToggleBtn) {
+                menuToggleBtn.addEventListener('click', () => toggleMobileMenu(true));
+            }
+            if (menuCloseBtn) {
+                menuCloseBtn.addEventListener('click', () => toggleMobileMenu(false));
+            }
+
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    
+                    if (targetId && targetId.startsWith('#')) {
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            toggleMobileMenu(false);
+                            lenis.scrollTo(targetElement, { offset: -80, duration: 1 });
+                        }
+                    } else if (targetId) {
+                        toggleMobileMenu(false);
+                        window.location.href = targetId;
+                    }
+                });
+            });
+
+            // 3.2. Scroll Event Listener (Handles ALL scroll-based effects)
+            lenis.on('scroll', ({ scroll, limit }) => {
+                
+                // Hero Fade Parallax
+                if (heroTitle) {
+                    const opacity = 1 - (scroll / 300); 
+                    heroTitle.style.opacity = Math.max(0, opacity);
+                    heroTitle.style.transform = `translateY(${scroll * 0.3}px)`;
+                }
+
+                if (scrollPrompt) {
+                    const opacity = 1 - (scroll / 100); 
+                    scrollPrompt.style.opacity = Math.max(0, opacity);
+                }
+                
+                // Project Image Parallax
+                updateProjectParallax();
+
+                // Three.js Scroll Parallax 
+                if (mesh) {
+                    mesh.position.y = -scroll * 0.001; 
+                }
+
+                // Scroll Reveal Animation Call
+                revealElementsOnScroll();
+            });
+
+            // 3.4. Smooth Anchor Links (Desktop/General)
+            const desktopLinks = document.querySelectorAll('nav.desktop-links a[href^="#"]');
+            
+            desktopLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        lenis.scrollTo(targetElement, { offset: -80, duration: 1 });
+                    }
+                });
+            });
+
+            // Run initial reveal check in case items are already in the viewport on load
+            revealElementsOnScroll();
+            
+            // --- HIDE LOADER AFTER SETUP ---
+            // Give a minimal delay to ensure all heavy scripts are executed and rendered
+            setTimeout(() => {
+                hideLoader();
+            }, 300);
+            
+        });
+    </script>
 </body>
 </html>
