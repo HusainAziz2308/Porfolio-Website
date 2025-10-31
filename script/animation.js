@@ -135,14 +135,23 @@ function updateProjectParallax() {
  * Scroll Reveal Animation Logic
  */
 function revealElementsOnScroll() {
-    const viewportThreshold = window.innerHeight * 0.85; 
+    // Define the vertical range in the viewport where items should be visible.
+    // Items entering this range will become visible, and items leaving it will hide.
+    const revealThresholdTop = window.innerHeight * 0.15; // Hide when top is above 15% of viewport height
+    const revealThresholdBottom = window.innerHeight * 0.85; // Reveal when top is below 85% of viewport height
 
     revealItems.forEach(item => {
-        if (item.classList.contains('visible')) return;
-
         const rect = item.getBoundingClientRect();
-        if (rect.top < viewportThreshold) {
-            item.classList.add('visible');
+
+        // Check if the element is within the visible portion of the viewport
+        if (rect.top < revealThresholdBottom && rect.bottom > revealThresholdTop) {
+            // Element is in view, add 'visible' class if it doesn't have it
+            if (!item.classList.contains('visible')) {
+                item.classList.add('visible');
+            }
+        } else {
+            // Element is out of view, remove 'visible' class if it has it
+            item.classList.remove('visible');
         }
     });
 }

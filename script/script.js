@@ -39,6 +39,12 @@ function hideLoader() {
 // Show the loader as soon as the script begins executing
 showLoader();
 
+// --- HIDE THE LOADER ---
+// The loader is hidden once all page assets (images, scripts, etc.) have fully loaded.
+// This provides a much smoother user experience than hiding it on DOMContentLoaded.
+window.addEventListener('load', () => {
+    hideLoader();
+});
 // Initialize Lenis with smooth, high-performance settings
 // Loading external library: https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.45/dist/lenis.min.js
 const lenis = new Lenis({
@@ -181,10 +187,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Run an initial check for any elements that are already in the viewport on load
     revealElementsOnScroll();
-
-    // --- HIDE THE LOADER ---
-    // Hide the loader after a short delay to ensure the initial render is complete
-    setTimeout(() => {
-        hideLoader();
-    }, 500); // A 500ms delay gives a good buffer
 });
