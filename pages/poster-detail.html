@@ -1,94 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Aziz Husain - Design: Saintek Poster</title>
-        <!-- Relative paths for resources -->
-        <link rel="stylesheet" href="../style/style.css"> 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Detail: The Responsive Layout System</title>
+    
+    <!-- External Libraries and Your Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- Link to the main stylesheet (Note: path adjusted for subdirectory 'pages/') -->
+    <link rel="stylesheet" href="../style/style.css">
 
-        <header class="fixed-nav scrolled">
-            <h1 class="logo">AZIZ HUSAIN</h1>
-            <nav class="desktop-links">
-                <!-- Links back to the main portfolio page -->
-                <a href="../index.html#about" data-section="about">About</a>
-                <a href="../index.html#work" data-section="work">Work</a>
-                <a href="../index.html#contact" data-section="contact">Contact</a>
-            </nav>
-            <button class="menu-toggle" aria-label="Toggle navigation menu">
-                <i class="fas fa-bars"></i>
-            </button>
-        </header>
-        
-        <nav class="mobile-nav-overlay">
-            <button class="close-menu-toggle"><i class="fas fa-times"></i></button>
-            <ul>
-                <li><a href="../index.html#about">About</a></li>
-                <li><a href="../index.html#work">Coding & Visuals</a></li>
-                <li><a href="../index.html#contact">Get In Touch</a></li>
-            </ul>
+</head>
+<body>
+
+    <!-- Header Navigation (Links back to the main page) -->
+    <header class="fixed-nav" data-scroll-section>
+        <h1 class="logo"><a href="../index.html">AZIZ HUSAIN</a></h1>
+        <nav class="desktop-links">
+            <a href="../index.html#programming">Back to Projects</a>
+            <a href="../index.html#contact">Contact</a>
         </nav>
+        <!-- Menu Toggle Button (for consistency) -->
+        <button class="menu-toggle" aria-label="Toggle navigation menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
 
-        <section id="project-detail" class="full-panel" style="min-height: 100vh; padding-top: 100px; background-color: var(--color-light);">
-            <div class="content-wrapper" style="max-width: 1000px; text-align: left; margin: 0 auto;">
-                
-                <p class="subtitle" style="color: var(--color-accent); margin-bottom: 10px; font-weight: 600;">GRAPHIC DESIGN</p>
-                <h2 class="title-l" style="font-size: 4.5rem; color: var(--color-dark);">SAINTEK EVENT POSTER</h2>
-                
-                <div class="project-media" style="margin: 40px 0;">
-                    <!-- Image reference updated -->
-                    <img src="../assets/images/Poster/poster oscar saintek 2025 4.png" alt="Oscar Saintek Poster" style="width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-                </div>
+    <!-- Mobile Navigation Overlay (Placeholder, needs corresponding JS) -->
+    <nav class="mobile-nav-overlay">
+        <button class="close-menu-toggle"><i class="fas fa-times"></i></button>
+        <ul>
+            <li><a href="../index.html#programming">Projects</a></li>
+            <li><a href="../index.html#visual-arts">Visual Arts</a></li>
+            <li><a href="../index.html#contact">Get In Touch</a></li>
+        </ul>
+    </nav>
 
-                <div class="project-info" style="display: grid; grid-template-columns: 1fr 2fr; gap: 50px; margin-top: 50px; color: var(--color-dark);">
-                    
-                    <div class="details-left">
-                        <h3 style="font-size: 2rem; color: var(--color-dark); margin-bottom: 20px;">DESIGN GOAL</h3>
-                        <p style="font-size: 1.1rem; color: #444; line-height: 1.6;">
-                            The objective was to create a bold, dynamic, and informative poster design for the annual Saintek event. The design needed to immediately grab attention while clearly conveying the event's core dates and themes.
-                        </p>
-                        
-                        <div class="links" style="margin-top: 30px;">
-                            <a href="#" target="_blank" class="cta-button" style="padding: 10px 20px; font-size: 0.9rem; border-color: var(--color-dark); color: var(--color-dark); background-color: var(--color-accent);">Download High-Res</a>
-                        </div>
-                    </div>
+    <!-- Main Content Container -->
+    <main data-scroll-container> 
 
-                    <div class="details-right">
-                        <h3 style="font-size: 2rem; color: var(--color-dark); margin-bottom: 20px;">DESIGN PRINCIPLES</h3>
-                        <ul style="list-style: none; display: flex; flex-wrap: wrap; gap: 15px;">
-                            <li class="tech-tag" style="background-color: var(--color-secondary); color: var(--color-light);">Visual Hierarchy</li>
-                            <li class="tech-tag" style="background-color: var(--color-secondary); color: var(--color-light);">Typography Focus</li>
-                            <li class="tech-tag" style="background-color: var(--color-secondary); color: var(--color-light);">Color Theory</li>
-                            <li class="tech-tag" style="background-color: var(--color-secondary); color: var(--color-light);">Adobe Suite (Ps/Ai)</li>
-                        </ul>
-                        
-                        <h3 style="font-size: 2rem; color: var(--color-dark); margin-top: 40px; margin-bottom: 20px;">COLOR PALETTE & TYPEFACE</h3>
-                        <p style="font-size: 1.1rem; color: #444; line-height: 1.6;">
-                            We used a high-energy color palette dominated by deep blues and neon accents to represent technological advancement. A strong, geometric typeface was chosen to ensure maximum legibility and impact in print and digital media.
-                        </p>
-                    </div>
-                </div>
+        <!-- ============================================== -->
+        <!-- 1. PROJECT HERO AND MEDIA SECTION -->
+        <!-- ============================================== -->
+        <section class="project-hero-detail" data-scroll-section>
+            <div class="project-header-text content-wrapper">
+                <p class="subtitle">PROJECT: REACT & TAILWIND</p>
+                <h1 class="title-detail">The Responsive Layout System</h1>
+            </div>
 
-                <a href="../index.html#work" class="cta-button" style="margin-top: 80px; margin-bottom: 50px; display: inline-block; border-color: var(--color-dark); color: var(--color-dark);">← Back to All Work</a>
+            <!-- Full-bleed Image Area -->
+            <div class="project-media-full-bleed">
+                <!-- Using a large placeholder image -->
+                <img id="detail-hero-image" 
+                     src="https://placehold.co/1800x1000/0A0A0A/FF3B00?text=FULL+PROJECT+VISUAL+HERE" 
+                     alt="Main project image" 
+                     data-scroll data-scroll-speed="-1.5">
             </div>
         </section>
 
-        <footer style="position: relative; background: var(--color-light); padding: 20px 0; text-align: center;">
-             <div class="social-links-footer" style="margin-bottom: 0;">
-                <a href="https://github.com/HusainAziz2308/" target="_blank" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
-                <a href="YOUR_LINKEDIN_URL" target="_blank" aria-label="LinkedIn Profile"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://www.instagram.com/aziz.husain23/" target="_blank" aria-label="Instagram Profile"><i class="fab fa-instagram"></i></a>
-                <a href="YOUR_TWITTER_X_URL" target="_blank" aria-label="X (Twitter) Profile"><i class="fab fa-x-twitter"></i></a>
+        <!-- ============================================== -->
+        <!-- 2. PROJECT INFO GRID -->
+        <!-- ============================================== -->
+        <section class="project-info-grid-section">
+            <div class="content-wrapper">
+                <div class="project-info-grid">
+                    
+                    <!-- LEFT COLUMN: Key Details -->
+                    <div class="sidebar-info">
+                        
+                        <div class="info-block">
+                            <h3 class="info-title">My Role</h3>
+                            <p class="info-body">Lead Frontend Developer & UX Architect</p>
+                        </div>
+                        
+                        <div class="info-block margin-top-lg">
+                            <h3 class="info-title">Technology Stack</h3>
+                            <ul class="tech-tags-list">
+                                <li class="tech-tag-item">React</li>
+                                <li class="tech-tag-item">TypeScript</li>
+                                <li class="tech-tag-item">Tailwind CSS</li>
+                                <li class="tech-tag-item">Framer Motion</li>
+                                <li class="tech-tag-item">Zustand (State)</li>
+                            </ul>
+                        </div>
+
+                        <div class="links-cta">
+                            <a href="#" class="cta-button" target="_blank">View Live Project</a>
+                            <a href="#" class="cta-button" style="background-color: transparent; color: var(--color-accent); margin-top: 15px;" target="_blank">View Codebase</a>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT COLUMN: Description -->
+                    <div class="description-content">
+                        <h3 class="info-title">Project Summary</h3>
+                        <p class="info-body">
+                            The Responsive Layout System was designed to unify the frontend architecture across five distinct product lines, reducing boilerplate code by 40%. The core challenge was building a highly customizable and declarative component library that could adapt instantly to screen size, user permissions, and internationalization needs. This involved leveraging React Hooks to manage complex component state and using Tailwind CSS utility-first approach for rapid, consistent styling.
+                        </p>
+                        
+                        <h3 class="info-title margin-top-lg">Challenges & Solutions</h3>
+                        <p class="info-body">
+                            One key challenge was implementing performant drag-and-drop interactions across large datasets. We solved this by using virtualized lists in conjunction with a custom throttling hook, ensuring a smooth 60fps experience even with thousands of data points. Additionally, the system was built with accessibility (WCAG 2.1) in mind from the ground up, utilizing proper ARIA attributes and keyboard navigation patterns.
+                        </p>
+                        
+                        <h3 class="info-title margin-top-lg">Outcome</h3>
+                        <p class="info-body">
+                            The successful rollout resulted in faster feature delivery, a 25% decrease in styling bugs reported, and significantly improved developer onboarding. The system now serves as the foundational UI layer for all new applications within the organization.
+                        </p>
+                    </div>
+
+                </div>
             </div>
-            &copy; <span id="current-year-detail"></span> AZIZ HUSAIN.
+        </section>
+        
+        <!-- 3. Footer (Link back to index) -->
+        <footer class="site-footer" data-scroll-section>
+             <div class="content-wrapper">
+                <div class="social-links-footer">
+                    <a href="https://github.com/HusainAziz2308/" target="_blank" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
+                    <a href="YOUR_LINKEDIN_URL" target="_blank" aria-label="LinkedIn Profile"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/aziz.husain23/" target="_blank" aria-label="Instagram Profile"><i class="fab fa-instagram"></i></a>
+                    <a href="YOUR_TWITTER_X_URL" target="_blank" aria-label="X (Twitter) Profile"><i class="fab fa-x-twitter"></i></a>
+                </div>
+                <p class="copyright">&copy; <span id="current-year-detail"></span> AZIZ HUSAIN. Built with passion.</p>
+             </div>
         </footer>
 
-        <script src="../script/script.js"></script>
-        <script>
-            document.getElementById('current-year-detail').textContent = new Date().getFullYear();
-        </script>
-    </body>
+    </main>
+
+    <!-- Scripts for Detail Page: Lenis Initialization and Custom JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.45/dist/lenis.min.js"></script>
+    <!-- Note: We are linking to a future detail-specific script -->
+    <script>
+        // Set up the current year in the footer
+        document.getElementById('current-year-detail').textContent = new Date().getFullYear();
+    </script>
+</body>
 </html>

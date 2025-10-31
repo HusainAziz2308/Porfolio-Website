@@ -1,132 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Aziz Husain - Portfolio | Immersive</title>
-        <link rel="stylesheet" href="style/style.css"> 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aziz Husain - Programmer & Visual Artist</title>
+    
+    <!-- External Libraries and Your Styles -->
+    <!-- 1. Three.js for 3D/Canvas (NEW) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Your main stylesheet -->
+    <link rel="stylesheet" href="style/style.css">
 
-        <header class="fixed-nav">
-            <h1 class="logo">AZIZ HUSAIN</h1>
-            <nav class="desktop-links">
-                <a href="#about" data-section="about">About</a>
-                <a href="#work" data-section="work">Work</a>
-                <a href="#contact" data-section="contact">Contact</a>
-            </nav>
-            <button class="menu-toggle" aria-label="Toggle navigation menu">
-                <i class="fas fa-bars"></i>
-            </button>
-        </header>
-        
-        <nav class="mobile-nav-overlay">
-            <button class="close-menu-toggle"><i class="fas fa-times"></i></button>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#work">Coding & Visuals</a></li>
-                <li><a href="#contact">Get In Touch</a></li>
-                </ul>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="fixed-nav" data-scroll-section>
+        <h1 class="logo"><a href="#hero">AZIZ HUSAIN</a></h1>
+        <nav class="desktop-links">
+            <a href="#programming" data-section="programming">Programming</a>
+            <a href="#visual-arts" data-section="visual-arts">Visual Arts</a>
+            <a href="#contact" data-section="contact">Contact</a>
         </nav>
+        <button class="menu-toggle" aria-label="Toggle navigation menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+    
+    <!-- Mobile Navigation Overlay (Hidden by CSS/JS initially) -->
+    <nav class="mobile-nav-overlay">
+        <button class="close-menu-toggle"><i class="fas fa-times"></i></button>
+        <ul>
+            <li><a href="#programming">Programming</a></li>
+            <li><a href="#visual-arts">Visual Arts</a></li>
+            <li><a href="#contact">Get In Touch</a></li>
+        </ul>
+    </nav>
 
-        <section id="hero" class="full-panel hero-panel" data-bg-image="assets/images/IMG_1367.JPG">
-            <div class="content-wrapper">
-                <h2 class="title-xl">AZIZ HUSAIN</h2>
-                <p class="subtitle">Developer & Visual Creator</p>
-                <a href="#about" class="cta-button">EXPLORE PORTFOLIO</a>
+
+    <!--
+        The main container for the whole page.
+        Lenis controls this scrollable area.
+    -->
+    <main data-scroll-container> 
+        
+        <!-- ============================================== -->
+        <!-- 1. HERO SECTION (The 3D Visual) -->
+        <!-- ============================================== -->
+        <section id="hero" class="hero-section" data-scroll-section>
+            
+            <!-- This is where the Three.js Canvas will be rendered -->
+            <canvas id="main-3d-canvas" class="visual-canvas"></canvas>
+
+            <div id="hero-title" class="hero-title-container">
+                <h1 class="hero-h1">AZIZ HUSAIN<span class="dot">.</span></h1>
+                <p class="hero-h1-sub">FRONTEND & VISUAL ARTIST</p>
             </div>
+
+            <!-- Scroll prompt -->
+            <p class="scroll-down-prompt">Scroll to Explore Work</p>
+
         </section>
 
-        <section id="about" class="full-panel about-panel">
+        <!-- ============================================== -->
+        <!-- 2. MAIN CONTENT SECTIONS -->
+        <!-- ============================================== -->
+        
+        <!-- The "Programmer" Section - Focus on Frontend UI -->
+        <section id="programming" class="content-section" data-scroll-section>
             <div class="content-wrapper">
-                <h2 class="title-l">CREATING STORIES, <br> ONE PIXEL AT A TIME.</h2>
-                <p class="text-l">I specialize in **full-stack web development** while fueling my passion for visual communication through photography, videography, and graphic design. My work is defined by precision, impact, and a dedication to detail.</p>
-            </div>
-        </section>
-
-        <section id="work" class="full-panel work-panel">
-            <div class="content-wrapper">
-                <h2 class="title-l">SELECTED WORKS</h2>
-                <div class="work-grid">
-                    <!-- 1. CODE: Links to the existing project detail page -->
-                    <a href="pages/project-detail.html" class="work-item coding-item" data-title="BEP Calculator" data-category="Code | Web Dev">
-                        <img src="assets/images/placeholder-bep-calculator.jpg" alt="BEP Calculator Project" class="work-img">
-                        <div class="overlay-text">
-                            <h3>BEP Calculator</h3>
-                            <p>Web Development</p>
+                <p class="subtitle">CODE & LOGIC</p>
+                <h2 class="section-h2">Frontend UI Master</h2>
+                <p class="section-description">Combining design passion with clean, component-driven code. Projects focus on performance, scalability, and stunning user experiences.</p>
+                
+                <!-- Project Grid Placeholder -->
+                <div class="project-grid">
+                    <!-- Project Item 1: Placeholder for a coding project -->
+                    <a href="pages/project-detail.html" class="project-item coding-project" data-scroll data-scroll-speed="1">
+                        <div class="project-overlay">
+                            <h3>Responsive Layout System</h3>
+                            <p>React / Tailwind CSS</p>
                         </div>
                     </a>
                     
-                    <!-- 2. PHOTO: Links to the new photography page -->
-                    <a href="pages/photography-detail.html" class="work-item photo-item" data-title="Divisi Media" data-category="Visual | Photography">
-                        <img src="assets/images/photography/IMG_2247.JPG" alt="Divisi Media Photo" class="work-img">
-                        <div class="overlay-text">
-                            <h3>Divisi Media</h3>
-                            <p>Photography</p>
+                    <!-- Project Item 2: Placeholder for another coding project -->
+                    <a href="pages/project-detail.html" class="project-item coding-project" data-scroll data-scroll-speed="-0.5">
+                        <div class="project-overlay">
+                            <h3>Interactive Data Dashboard</h3>
+                            <p>Next.js / D3.js</p>
                         </div>
                     </a>
-
-                    <!-- 3. VIDEO: Links to the new videography page -->
-                    <a href="pages/videography-detail.html" class="work-item video-item" data-title="Short Film Title" data-category="Visual | Videography">
-                         <img src="assets/images/videography/video-thumbnail.png" onerror="this.style.display='none'; this.parentNode.querySelector('.video-placeholder').style.display='flex';" alt="Video Thumbnail" class="work-img">
-                        <div class="video-placeholder" style="display:none; width: 100%; height: 100%; justify-content: center; align-items: center; background-color: #00158f; font-size: 3rem;">
-                            <i class="fas fa-video"></i>
-                        </div>
-                        <div class="overlay-text">
-                            <h3>Short Film Title</h3>
-                            <p>Videography</p>
-                        </div>
-                    </a>
-
-                    <!-- 4. DESIGN: Links to the new poster detail page -->
-                    <a href="pages/poster-detail.html" class="work-item design-item" data-title="Oscar Saintek Poster" data-category="Visual | Design">
-                        <img src="assets/images/Poster/poster oscar saintek 2025 4.png" alt="Oscar Saintek Poster" class="work-img">
-                        <div class="overlay-text">
-                            <h3>Saintek Poster</h3>
-                            <p>Graphic Design</p>
-                        </div>
-                    </a>
-
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="full-panel contact-panel">
-            <div class="content-wrapper">
-                <h2 class="title-l">LET'S CONNECT.</h2>
+        <!-- The "Visual Arts" Section - Photography, Video, Design -->
+        <section id="visual-arts" class="content-section visual-section" data-scroll-section>
+             <div class="content-wrapper">
+                <p class="subtitle">LIGHT & SHADOW</p>
+                <h2 class="section-h2 animated-text-wrapper">Visual Storyteller</h2>
                 
-                <form id="contact-form">
-                    <input type="text" id="name" name="name" placeholder="YOUR NAME" required>
-                    <input type="email" id="email" name="email" placeholder="YOUR EMAIL" required>
-                    <textarea id="message" name="message" rows="4" placeholder="YOUR MESSAGE" required></textarea>
-                    <button type="submit" class="cta-submit-button">SEND MESSAGE</button>
-                    <p class="form-status" id="form-status"></p>
-                </form>
+                <div class="media-showcase">
+                    <!-- Media Item 1: Photography -->
+                    <a href="pages/divisi-media-detail.html" class="media-item" data-scroll data-scroll-speed="1.2">
+                        <img src="https://placehold.co/800x600/111111/AAAAAA?text=Photography+Portfolio" alt="Photography Project">
+                        <span class="overlay-text">Photography & Portraiture</span>
+                    </a>
+                    
+                    <!-- Media Item 2: Videography -->
+                    <a href="pages/video-project-detail.html" class="media-item" data-scroll data-scroll-speed="0.8">
+                        <img src="https://placehold.co/800x450/111111/AAAAAA?text=Videography+Reel" alt="Videography Project">
+                        <span class="overlay-text">Videography & Editing</span>
+                    </a>
+                    
+                    <!-- Media Item 3: Poster Design -->
+                    <a href="pages/design-project-detail.html" class="media-item" data-scroll data-scroll-speed="1.1">
+                        <img src="https://placehold.co/800x800/111111/AAAAAA?text=Poster+Design" alt="Poster Design Project">
+                        <span class="overlay-text">Graphic & Poster Design</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- The "About/Contact" Section -->
+        <section id="contact" class="content-section contact-section" data-scroll-section>
+            <div class="content-wrapper">
+                <p class="subtitle">GET IN TOUCH</p>
+                <h2 class="section-h2">Let's Build Something Beautiful</h2>
+                <div class="contact-grid">
+                    <div class="contact-details">
+                        <p>I am currently open for exciting freelance projects, especially those that blend complex frontend engineering with strong visual communication. Whether it's an interactive web application or a striking visual campaign, I'm ready to collaborate.</p>
+                        <a href="mailto:your@email.com" class="cta-button primary-accent-btn margin-top-lg">Email Me Now</a>
+                    </div>
+                    <!-- Placeholder for the Rive/SVG signature animation -->
+                    <div id="signature-animation">
+                        <!-- We will put a simple text placeholder here for now -->
+                        <h3 class="signature-placeholder">Aziz Husain<span class="dot-accent">_</span></h3>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <!-- 4. Footer -->
+        <footer class="site-footer" data-scroll-section>
+             <div class="content-wrapper">
                 <div class="social-links-footer">
                     <a href="https://github.com/HusainAziz2308/" target="_blank" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
                     <a href="YOUR_LINKEDIN_URL" target="_blank" aria-label="LinkedIn Profile"><i class="fab fa-linkedin-in"></i></a>
                     <a href="https://www.instagram.com/aziz.husain23/" target="_blank" aria-label="Instagram Profile"><i class="fab fa-instagram"></i></a>
                     <a href="YOUR_TWITTER_X_URL" target="_blank" aria-label="X (Twitter) Profile"><i class="fab fa-x-twitter"></i></a>
                 </div>
-            </div>
-            <footer>&copy; <span id="current-year"></span> AZIZ HUSAIN.</footer>
-        </section>
-        
-        <div id="project-modal" class="modal">
-            <div class="modal-content-custom">
-                <button class="close-btn-custom"><i class="fas fa-times"></i></button>
-                <div class="modal-body">
-                    <img id="modal-project-img" src="" alt="Project Image">
-                    <h3 id="modal-project-title">Project Title</h3>
-                    <p id="modal-project-category">Category</p>
-                    <p id="modal-project-description">Detailed description of the project goes here. Explain the challenge, your solution, and the technologies used.</p>
-                    <a id="modal-project-link" href="#" target="_blank" class="modal-link-button">View Live Project</a>
-                </div>
-            </div>
-        </div>
+                <p class="copyright">&copy; <span id="current-year-main"></span> AZIZ HUSAIN. Built with passion.</p>
+             </div>
+        </footer>
 
-        <script src="script/script.js"></script>
-    </body>
+    </main>
+
+    <!-- 5. Scripts: Lenis Initialization and Custom JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.45/dist/lenis.min.js"></script>
+    <script src="script/script.js"></script>
+
+</body>
 </html>

@@ -4,90 +4,98 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Aziz Husain - Photography: Divisi Media</title>
-        <!-- Relative paths for resources -->
+        
         <link rel="stylesheet" href="../style/style.css"> 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        
+        <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.45/dist/lenis.min.js"></script>
+
     </head>
     <body>
 
-        <header class="fixed-nav scrolled">
-            <h1 class="logo">AZIZ HUSAIN</h1>
-            <nav class="desktop-links">
-                <!-- Links back to the main portfolio page -->
-                <a href="../index.html#about" data-section="about">About</a>
-                <a href="../index.html#work" data-section="work">Work</a>
-                <a href="../index.html#contact" data-section="contact">Contact</a>
-            </nav>
-            <button class="menu-toggle" aria-label="Toggle navigation menu">
-                <i class="fas fa-bars"></i>
-            </button>
-        </header>
-        
-        <nav class="mobile-nav-overlay">
-            <button class="close-menu-toggle"><i class="fas fa-times"></i></button>
-            <ul>
-                <li><a href="../index.html#about">About</a></li>
-                <li><a href="../index.html#work">Coding & Visuals</a></li>
-                <li><a href="../index.html#contact">Get In Touch</a></li>
-            </ul>
-        </nav>
+        <main data-scroll-container> 
+            
+            <header class="project-nav" data-scroll-section>
+                <h1 class="logo"><a href="../index.html">AZIZ HUSAIN</a></h1>
+                <nav class="desktop-links">
+                    <a href="../index.html#work" class="cta-link back-to-work" data-section="work">
+                        <span class="icon-arrow">←</span> Back to All Work
+                    </a>
+                </nav>
+            </header>
 
-        <section id="project-detail" class="full-panel" style="min-height: 100vh; padding-top: 100px; background-color: var(--color-dark);">
-            <div class="content-wrapper" style="max-width: 1000px; text-align: left; margin: 0 auto;">
-                
-                <p class="subtitle" style="color: var(--color-accent); margin-bottom: 10px; font-weight: 600;">VISUAL COMMUNICATION</p>
-                <h2 class="title-l" style="font-size: 4.5rem; color: var(--color-light);">DIVISI MEDIA - PORTRAITS</h2>
-                
-                <div class="project-media" style="margin: 40px 0;">
-                    <!-- Image reference updated -->
-                    <img src="../assets/images/photography/IMG_2247.JPG" alt="Divisi Media Photo" style="width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <section id="project-hero" class="project-hero-detail" data-scroll-section>
+                <div class="project-header-text">
+                    <p class="subtitle">VISUAL COMMUNICATION</p>
+                    <h2 class="title-detail">DIVISI MEDIA - PORTRAITS</h2>
                 </div>
+                
+                <div class="project-media-full-bleed" data-scroll data-scroll-speed="-1">
+                    <img src="../assets/images/photography/IMG_2247.JPG" alt="Divisi Media Photo">
+                </div>
+            </section>
 
-                <div class="project-info" style="display: grid; grid-template-columns: 1fr 2fr; gap: 50px; margin-top: 50px; color: var(--color-light);">
-                    
-                    <div class="details-left">
-                        <h3 style="font-size: 2rem; color: var(--color-light); margin-bottom: 20px;">PROJECT CONCEPT</h3>
-                        <p style="font-size: 1.1rem; color: #ccc; line-height: 1.6;">
-                            This series captures the dynamic energy and collaboration within the Divisi Media team. The focus was on utilizing **natural light** and **deep contrast** to emphasize the subjects' expressions and create a strong, professional mood.
-                        </p>
+            <section id="project-info-grid" class="project-info-grid-section" data-scroll-section>
+                <div class="content-wrapper">
+                    <div class="project-info-grid">
                         
-                        <div class="links" style="margin-top: 30px;">
-                            <a href="#" target="_blank" class="cta-button" style="padding: 10px 20px; font-size: 0.9rem;">View More Photos</a>
+                        <div class="details-left">
+                            <h3 class="info-title">PROJECT CONCEPT</h3>
+                            <p class="info-body">
+                                This series captures the dynamic energy and collaboration within the Divisi Media team. The focus was on utilizing **natural light** and **deep contrast** to emphasize the subjects' expressions and create a strong, professional mood.
+                            </p>
+                            
+                            <div class="links-cta">
+                                <a href="#" target="_blank" class="cta-button primary-accent-btn">View More Photos</a>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="details-right">
-                        <h3 style="font-size: 2rem; color: var(--color-light); margin-bottom: 20px;">KEY TECHNIQUES</h3>
-                        <ul style="list-style: none; display: flex; flex-wrap: wrap; gap: 15px;">
-                            <li class="tech-tag">Candid Portraiture</li>
-                            <li class="tech-tag">Post-Production (Lightroom)</li>
-                            <li class="tech-tag">Deep Contrast & Grading</li>
-                            <li class="tech-tag">Focal Length Experimentation</li>
-                        </ul>
-                        
-                        <h3 style="font-size: 2rem; color: var(--color-light); margin-top: 40px; margin-bottom: 20px;">THE EXECUTION</h3>
-                        <p style="font-size: 1.1rem; color: #ccc; line-height: 1.6;">
-                            The shoot was executed over a single afternoon, requiring rapid adaptation to changing lighting conditions. We aimed for authenticity, ensuring the final images reflected the team's genuine character rather than stiff, posed shots.
-                        </p>
+                        <div class="details-right">
+                            
+                            <h3 class="info-title">KEY TECHNIQUES</h3>
+                            <ul class="tech-tags-list">
+                                <li class="tech-tag-item"><span class="animated-text-char">Candid Portraiture</span></li>
+                                <li class="tech-tag-item"><span class="animated-text-char">Post-Production (Lightroom)</span></li>
+                                <li class="tech-tag-item"><span class="animated-text-char">Deep Contrast & Grading</span></li>
+                                <li class="tech-tag-item"><span class="animated-text-char">Focal Length Experimentation</span></li>
+                            </ul>
+                            
+                            <h3 class="info-title margin-top-lg">THE EXECUTION</h3>
+                            <p class="info-body">
+                                The shoot was executed over a single afternoon, requiring rapid adaptation to changing lighting conditions. We aimed for authenticity, ensuring the final images reflected the team's genuine character rather than stiff, posed shots.
+                            </p>
+                        </div>
+
                     </div>
                 </div>
+            </section>
+            
+            <footer class="site-footer" data-scroll-section>
+                <div class="social-links-footer">
+                    <a href="https://github.com/HusainAziz2308/" target="_blank" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
+                    <a href="YOUR_LINKEDIN_URL" target="_blank" aria-label="LinkedIn Profile"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/aziz.husain23/" target="_blank" aria-label="Instagram Profile"><i class="fab fa-instagram"></i></a>
+                    <a href="YOUR_TWITTER_X_URL" target="_blank" aria-label="X (Twitter) Profile"><i class="fab fa-x-twitter"></i></a>
+                </div>
+                <p class="copyright">&copy; <span id="current-year-detail"></span> AZIZ HUSAIN.</p>
+            </footer>
 
-                <a href="../index.html#work" class="cta-button" style="margin-top: 80px; margin-bottom: 50px; display: inline-block;">← Back to All Work</a>
-            </div>
-        </section>
+        </main>
 
-        <footer style="position: relative; background: var(--color-dark); padding: 20px 0; text-align: center;">
-             <div class="social-links-footer" style="margin-bottom: 0;">
-                <a href="https://github.com/HusainAziz2308/" target="_blank" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
-                <a href="YOUR_LINKEDIN_URL" target="_blank" aria-label="LinkedIn Profile"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://www.instagram.com/aziz.husain23/" target="_blank" aria-label="Instagram Profile"><i class="fab fa-instagram"></i></a>
-                <a href="YOUR_TWITTER_X_URL" target="_blank" aria-label="X (Twitter) Profile"><i class="fab fa-x-twitter"></i></a>
-            </div>
-            &copy; <span id="current-year-detail"></span> AZIZ HUSAIN.
-        </footer>
-
+        <!-- Scripts: Lenis is included via CDN, and our custom script handles initialization -->
+        <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.45/dist/lenis.min.js"></script>
         <script src="../script/script.js"></script>
         <script>
+            // Initialize Lenis for smooth scrolling
+            const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), orientation: 'vertical', gestureOrientation: 'vertical', smoothWheel: true, smoothTouch: false, touchMultiplier: 2, infinite: false });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+            
+            // Set current year
             document.getElementById('current-year-detail').textContent = new Date().getFullYear();
         </script>
     </body>

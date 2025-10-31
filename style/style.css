@@ -1,522 +1,634 @@
-/* RESET AND BASIC STYLES */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* ------------------------------------------- */
+/* 1. Global Variables and Resets */
+/* ------------------------------------------- */
+:root {
+    /* Define Color Palette - Dark, high-contrast theme */
+    --color-dark: #0A0A0A; /* Deep Charcoal/Black for background */
+    --color-light: #F5F5F5; /* Near-White for text */
+    --color-accent: #FF3B00; /* Bright Orange/Red for key highlights (Lando's McLaren color) */
+    --color-medium-gray: #777777; /* For subtle text/dividers */
+
+    /* Typography */
+    --font-primary: 'Inter', sans-serif;
+    --font-size-body: 1.15rem;
+    --font-size-h1: 8vw; /* Fluid H1 for big impact */
+    --font-size-h2: 5rem;
+    --font-size-h3: 2rem;
+
+    /* Spacing */
+    --spacing-lg: 100px;
+    --spacing-md: 40px;
 }
 
-:root {
-    --color-dark: #121212; /* Near Black */
-    --color-light: #f4f4f4; /* Near White */
-    --color-accent: #00aeff; /* Bright Blue Accent (Primary) */
-    --color-secondary: #00158f; /* Deep Blue (Secondary) */
-    --font-heading: 'Segoe UI', sans-serif;
-    --font-body: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* Load Inter font (simulated via import) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
 }
 
 html {
     scroll-behavior: smooth;
+    background-color: var(--color-dark);
 }
 
 body {
-    font-family: var(--font-body);
+    font-family: var(--font-primary);
     color: var(--color-light);
+    line-height: 1.6;
     background-color: var(--color-dark);
-    line-height: 1.5;
-    overflow-x: hidden;
+    /* Prevent default scroll, Lenis will manage it */
+    overflow: hidden; 
 }
 
-a {
-    color: var(--color-accent);
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
+/* ------------------------------------------- */
+/* 2. Typography and Utility Classes */
+/* ------------------------------------------- */
 
-a:hover {
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
     color: var(--color-light);
 }
 
 h1, h2, h3 {
-    font-family: var(--font-heading);
-    font-weight: 800;
-    color: var(--color-light);
+    font-weight: 900;
+    line-height: 1.1;
 }
 
-/* ------------------------------------------------ */
-/* NAVIGATION & HEADER */
-/* ------------------------------------------------ */
+h1 { font-size: var(--font-size-h1); }
+h2 { font-size: var(--font-size-h2); }
+h3 { font-size: var(--font-size-h3); }
+
+/* Anchor styles */
+a {
+    color: var(--color-light);
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+a:hover {
+    color: var(--color-accent);
+}
+
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+/* Accent text/Subtitle */
+.subtitle {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+}
+
+/* Call To Action Buttons (for high contrast) */
+.cta-button {
+    display: inline-block;
+    padding: 12px 30px;
+    border: 2px solid var(--color-accent);
+    background-color: var(--color-accent);
+    color: var(--color-dark);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: var(--color-dark);
+    color: var(--color-accent);
+    transform: translateY(-2px);
+}
+
+/* ------------------------------------------- */
+/* 3. Navigation and Header */
+/* ------------------------------------------- */
 
 .fixed-nav {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000;
+    padding: 20px var(--spacing-md);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
-    background: transparent;
-    transition: background-color 0.3s ease, padding 0.3s ease;
-}
-
-/* Sticky effect on scroll (less noticeable with dark background) */
-.fixed-nav.scrolled {
-    background-color: rgba(18, 18, 18, 0.95);
-    padding: 15px 40px;
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: var(--color-accent);
-    letter-spacing: 2px;
+    z-index: 1000;
+    /* Use a subtle transparent background */
+    background: rgba(10, 10, 10, 0.8); 
+    backdrop-filter: blur(5px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .desktop-links a {
-    margin-left: 30px;
-    font-size: 1rem;
+    margin-left: var(--spacing-md);
     font-weight: 600;
-    text-transform: uppercase;
 }
 
-.menu-toggle {
+/* Menu Toggle Button (Visible on mobile, hidden on desktop) */
+.menu-toggle, .close-menu-toggle {
+    display: none; /* Hidden by default, only show on mobile */
     background: none;
     border: none;
     color: var(--color-light);
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     cursor: pointer;
-    display: none; /* Hide on desktop */
+    z-index: 1001;
+    transition: color 0.3s ease;
 }
 
-/* Mobile Navigation Overlay */
+.menu-toggle:hover, .close-menu-toggle:hover {
+    color: var(--color-accent);
+}
+
+
+/* --- MOBILE MENU OVERLAY STYLES (NEW BLOCK) --- */
 .mobile-nav-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background-color: var(--color-dark);
-    z-index: 1050;
-    display: none;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-.mobile-nav-overlay.active {
+    z-index: 999;
+    /* Transition from the left */
+    transform: translateX(-100%);
+    transition: transform 0.5s cubic-bezier(0.86, 0, 0.07, 1); 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    opacity: 1;
-}
-
-.mobile-nav-overlay ul {
-    list-style: none;
     text-align: center;
 }
 
+.mobile-nav-overlay.open {
+    transform: translateX(0);
+}
+
+.mobile-nav-overlay .close-menu-toggle {
+    position: absolute;
+    top: 30px;
+    right: var(--spacing-md);
+    display: block; /* Always visible when the overlay is open */
+}
+
+.mobile-nav-overlay ul {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
 .mobile-nav-overlay a {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 900;
-    display: block;
-    padding: 15px 0;
-    color: var(--color-light);
-    transition: color 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
 .mobile-nav-overlay a:hover {
     color: var(--color-accent);
 }
 
-.close-menu-toggle {
-    position: absolute;
-    top: 30px;
-    right: 40px;
-    background: none;
-    border: none;
-    color: var(--color-light);
-    font-size: 2rem;
-    cursor: pointer;
-}
-
-/* ------------------------------------------------ */
-/* FULL SCREEN PANELS (SECTIONS) */
-/* ------------------------------------------------ */
-
-.full-panel {
-    min-height: 100vh;
-    width: 100%;
+/* ------------------------------------------- */
+/* 4. HERO SECTION STYLES (3D Visual) */
+/* ------------------------------------------- */
+.hero-section {
+    position: relative;
+    height: 100vh;
     display: flex;
-    align-items: center;
     justify-content: center;
-    padding: 100px 40px;
-    position: relative;
-    overflow: hidden;
+    align-items: center;
+    overflow: hidden; 
 }
 
-.content-wrapper {
-    position: relative;
-    z-index: 2;
-    max-width: 1200px;
-    width: 100%;
-    text-align: center;
-}
-
-/* Shared Text Styles */
-.title-xl { font-size: 6rem; line-height: 1.1; margin-bottom: 20px; text-transform: uppercase; }
-.title-l { font-size: 3.5rem; line-height: 1.2; margin-bottom: 20px; color: var(--color-dark); }
-.subtitle { font-size: 1.5rem; font-weight: 400; color: var(--color-light); }
-.text-l { font-size: 1.2rem; font-weight: 300; line-height: 1.8; max-width: 800px; margin: 0 auto 40px; color: var(--color-dark); }
-
-/* --- HERO PANEL --- */
-.hero-panel {
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-image: var(--bg-img);
-    transition: background-position 0.5s ease-out; /* For Parallax JS */
-}
-
-.hero-panel::before {
-    content: '';
+.visual-canvas {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.65); /* Dark overlay for text contrast */
-    z-index: 1;
+    z-index: 0; 
+    /* Ensures the canvas doesn't introduce scroll issues */
+    touch-action: none; 
 }
 
-.hero-panel .title-xl {
-    color: var(--color-light);
-}
-
-.cta-button {
-    display: inline-block;
-    padding: 15px 35px;
-    border: 2px solid var(--color-accent);
-    color: var(--color-accent);
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    margin-top: 30px;
-}
-
-.cta-button:hover {
-    background-color: var(--color-accent);
-    color: var(--color-dark);
-}
-
-/* --- ABOUT PANEL --- */
-.about-panel {
-    background-color: var(--color-light);
-    color: var(--color-dark);
+.hero-title-container {
+    position: relative;
     text-align: center;
-}
-.about-panel .title-l {
-    color: var(--color-secondary);
-}
-
-/* --- WORK PANEL (THE GALLERY) --- */
-.work-panel {
-    background-color: var(--color-dark);
+    z-index: 10;
+    pointer-events: none; /* Allows mouse events to pass through to the canvas/body */
+    transition: opacity 0.5s, transform 0.5s;
+    will-change: opacity, transform;
 }
 
-.work-panel .title-l {
-    color: var(--color-light);
-    margin-bottom: 60px;
+.hero-h1 {
+    font-size: var(--font-size-h1);
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+}
+.hero-h1-sub {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--color-medium-gray);
+    margin-top: -20px;
+}
+.dot {
+    color: var(--color-accent);
 }
 
-.work-grid {
+.scroll-down-prompt {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-medium-gray);
+    letter-spacing: 0.1em;
+    animation: bounce 2s infinite;
+    z-index: 10;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translate(-50%, 0);
+    }
+    40% {
+        transform: translate(-50%, -10px);
+    }
+    60% {
+        transform: translate(-50%, -5px);
+    }
+}
+
+/* ------------------------------------------- */
+/* 5. MAIN CONTENT & GRID STYLES */
+/* ------------------------------------------- */
+
+.content-section {
+    padding: var(--spacing-lg) 0;
+    min-height: 100vh;
+}
+
+.section-h2 {
+    margin: 15px 0 30px 0;
+    text-transform: uppercase;
+}
+
+.section-description {
+    max-width: 700px;
+    font-size: var(--font-size-body);
+    color: var(--color-medium-gray);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* --- PROGRAMMING PROJECT GRID --- */
+.project-grid {
     display: grid;
-    /* Mixed grid layout for visual interest */
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: auto;
-    gap: 15px;
+    grid-template-columns: repeat(2, 1fr); /* Two columns on desktop */
+    gap: 50px;
 }
 
-.work-item {
+.project-item {
+    display: block;
+    height: 400px; 
+    border-radius: 15px;
     position: relative;
     overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    background-color: #1a1a1a;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
     cursor: pointer;
-    aspect-ratio: 1 / 1;
-    transition: transform 0.3s ease;
 }
 
-.work-item:hover {
+/* NEW: Styles for the image inside the project item to enable parallax */
+.project-item img {
+    position: absolute;
+    top: -10%; /* Start the image 10% higher to center it in the 120% height window */
+    left: 0;
+    width: 100%;
+    height: 120%; /* Make it taller than the container for the parallax effect */
+    object-fit: cover;
+    will-change: transform; /* Performance optimization for transformation */
+    /* Visual style enhancement */
+    filter: brightness(0.6); 
+    transition: filter 0.3s ease;
+}
+
+
+.project-item:hover {
+    box-shadow: 0 0 40px rgba(255, 59, 0, 0.4); /* Glowing accent shadow on hover */
     transform: translateY(-5px);
 }
 
-/* Size adjustments for the grid items */
-.work-item:nth-child(1) { grid-column: span 2; } /* BEP Calculator: spans 2 columns */
-.work-item:nth-child(3) { grid-column: span 2; } /* Video: spans 2 columns */
-
-.work-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: opacity 0.4s ease, transform 0.6s ease;
+.project-item:hover img {
+    filter: brightness(0.9);
 }
 
-.work-item:hover .work-img {
-    opacity: 0.8;
-    transform: scale(1.05);
+.project-item:nth-child(2n) {
+    /* Staggered layout - push every second item down slightly */
+    margin-top: 50px; 
 }
 
-.overlay-text {
+.project-overlay {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 20px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    padding: 30px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+    z-index: 20; /* Ensure overlay text is above the image */
+}
+
+.project-overlay h3 {
+    font-size: 1.5rem;
     color: var(--color-light);
-    text-align: left;
+    margin-bottom: 5px;
+}
+.project-overlay p {
+    color: var(--color-accent);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+
+/* --- VISUAL ARTS SHOWCASE (More Image Focused) --- */
+.media-showcase {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns on desktop */
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.media-item {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
     transition: transform 0.3s ease;
 }
 
-.overlay-text h3 {
-    font-size: 1.5rem;
-    margin-bottom: 5px;
+.media-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    filter: brightness(0.8) grayscale(0.2);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.5, 1), filter 0.6s ease;
+}
+
+.media-item:hover img {
+    transform: scale(1.05);
+    filter: brightness(1) grayscale(0);
+}
+
+.overlay-text {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-light);
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 20; /* Ensure overlay text is above the image */
+}
+
+.media-item:hover .overlay-text {
+    opacity: 1;
+}
+
+/* --- CONTACT SECTION --- */
+.contact-section {
+    padding-top: 100px;
+    padding-bottom: 150px;
+}
+.contact-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+.contact-details p {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: var(--color-medium-gray);
+    max-width: 600px;
+}
+.signature-placeholder {
+    font-family: 'Times New Roman', serif;
+    font-size: 3rem;
+    font-style: italic;
+    font-weight: 300;
+    text-align: right;
     color: var(--color-light);
 }
-
-.overlay-text p {
-    font-size: 0.9rem;
+.dot-accent {
     color: var(--color-accent);
-    font-weight: 600;
 }
 
-.video-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--color-secondary);
-    font-size: 3rem;
-}
+/* ------------------------------------------- */
+/* 6. Detail Page Structure (project-detail.html) */
+/* ------------------------------------------- */
 
-/* --- CONTACT PANEL --- */
-.contact-panel {
-    background-color: var(--color-light);
-}
-
-.contact-panel .title-l {
-    color: var(--color-secondary);
-}
-
-#contact-form {
-    max-width: 600px;
-    margin: 40px auto;
+.project-hero-detail {
+    min-height: 100vh;
+    padding-top: 100px; /* Space for the fixed header */
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: var(--color-dark);
+}
+
+.project-header-text {
     text-align: center;
+    padding: 80px 0 40px 0;
 }
 
-#contact-form input,
-#contact-form textarea {
-    width: 100%;
-    padding: 15px;
-    border: 1px solid var(--color-secondary);
-    border-radius: 0; /* Modern, clean look */
-    background: transparent;
-    color: var(--color-dark);
-    font-size: 1rem;
-}
-
-#contact-form input::placeholder,
-#contact-form textarea::placeholder {
-    color: #666;
-}
-
-#contact-form input:focus,
-#contact-form textarea:focus {
-    border-color: var(--color-accent);
-    outline: none;
-}
-
-.cta-submit-button {
-    background-color: var(--color-secondary);
-    color: var(--color-light);
-    padding: 15px 30px;
-    font-weight: 700;
+.title-detail {
+    font-size: 5rem;
     text-transform: uppercase;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    margin-top: 10px;
 }
 
-.cta-submit-button:hover {
-    background-color: var(--color-accent);
-    color: var(--color-dark);
+.project-media-full-bleed {
+    width: 100%;
+    overflow: hidden; /* Important for the parallax effect */
+    padding: 0 50px; /* Some margin on the side */
 }
 
-.form-status {
-    color: var(--color-secondary);
-    font-weight: 600;
-    margin-top: 15px;
+.project-media-full-bleed img {
+    width: 100%;
+    display: block;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+    transition: transform 0.05s linear; 
 }
 
-.social-links-footer {
+.project-info-grid-section {
+    padding: var(--spacing-lg) 0;
+    background-color: var(--color-dark);
+}
+
+.project-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 100px;
+    padding: var(--spacing-md) 0;
+}
+
+.info-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: var(--color-light);
+    text-transform: uppercase;
+}
+
+.info-body {
+    font-size: 1.1rem;
+    color: var(--color-medium-gray);
+    line-height: 1.7;
+}
+
+.margin-top-lg {
+    margin-top: 60px;
+}
+
+.links-cta {
     margin-top: 40px;
 }
 
+/* Tech Tags styling */
+.tech-tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.tech-tag-item {
+    padding: 8px 18px;
+    border: 1px solid var(--color-medium-gray);
+    color: var(--color-light);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 20px;
+    cursor: default;
+    transition: background-color 0.3s ease;
+}
+
+.tech-tag-item:hover {
+    background-color: var(--color-accent);
+    color: var(--color-dark);
+    border-color: var(--color-accent);
+}
+
+/* ------------------------------------------- */
+/* 7. Footer and General Layout */
+/* ------------------------------------------- */
+
+.site-footer {
+    padding: var(--spacing-md) 0;
+    text-align: center;
+    background-color: var(--color-dark);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 .social-links-footer a {
-    color: var(--color-secondary);
-    font-size: 2rem;
+    font-size: 1.8rem;
     margin: 0 15px;
+    color: var(--color-medium-gray);
+    display: inline-block;
 }
 
 .social-links-footer a:hover {
-    color: var(--color-accent);
-}
-
-footer {
-    position: absolute;
-    bottom: 20px;
-    width: 100%;
-    text-align: center;
-    font-size: 0.8rem;
-    color: #999;
-}
-
-/* ------------------------------------------------ */
-/* MODAL POPUP (Simplified) */
-/* ------------------------------------------------ */
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    overflow-y: auto;
-}
-
-.modal-content-custom {
-    background-color: var(--color-dark);
-    margin: 5% auto;
-    padding: 40px;
-    border-radius: 10px;
-    max-width: 800px;
-    position: relative;
     color: var(--color-light);
+    transform: scale(1.1);
 }
 
-.close-btn-custom {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: none;
-    color: var(--color-light);
-    font-size: 2rem;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.close-btn-custom:hover {
-    color: var(--color-accent);
-}
-
-.modal-body h3 {
-    color: var(--color-accent);
-    font-size: 2.5rem;
-    margin-top: 20px;
-}
-
-.modal-body p {
-    margin-bottom: 20px;
-    color: #ccc;
-}
-
-#modal-project-img {
-    width: 100%;
-    height: auto;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-
-.modal-link-button {
-    display: inline-block;
-    padding: 10px 25px;
-    background-color: var(--color-accent);
-    color: var(--color-dark);
-    font-weight: 700;
+.copyright {
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: var(--color-medium-gray);
+    letter-spacing: 0.1em;
     text-transform: uppercase;
 }
 
-.modal-link-button:hover {
-    background-color: var(--color-light);
-}
 
-/* ------------------------------------------------ */
-/* New Styles for Project Detail Page */
-/* ------------------------------------------------ */
+/* ------------------------------------------- */
+/* 8. Mobile Responsiveness */
+/* ------------------------------------------- */
 
-.tech-tag {
-    background-color: var(--color-secondary);
-    color: var(--color-light);
-    padding: 8px 15px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    transition: background-color 0.3s;
-}
-
-.tech-tag:hover {
-    background-color: var(--color-accent);
-    color: var(--color-dark);
-}
-
-
-/* ------------------------------------------------ */
-/* MEDIA QUERIES (MOBILE) */
-/* ------------------------------------------------ */
-
-@media (max-width: 900px) {
-    .title-xl { font-size: 4rem; }
-    .title-l { font-size: 2.5rem; }
-    .subtitle { font-size: 1.2rem; }
-    .text-l { font-size: 1rem; }
-
-    .fixed-nav {
-        padding: 15px 20px;
+@media (max-width: 1024px) {
+    :root {
+        --font-size-h1: 12vw;
+        --font-size-h2: 3rem;
+        --spacing-lg: 60px;
+        --spacing-md: 20px;
     }
 
-    .desktop-links {
-        display: none;
-    }
-
+    /* Show the menu toggle button */
     .menu-toggle {
         display: block;
     }
-    
-    .work-grid {
-        grid-template-columns: 1fr; /* Single column on mobile */
+
+    /* Detail Page adjustments */
+    .title-detail {
+        font-size: 3rem;
     }
 
-    .work-item:nth-child(1), 
-    .work-item:nth-child(3) {
-        grid-column: span 1; 
+    .project-info-grid {
+        grid-template-columns: 1fr; /* Stack columns */
+        gap: 50px;
+    }
+
+    .project-media-full-bleed {
+        padding: 0 var(--spacing-md);
     }
     
-    /* Responsive adjustment for the Project Detail grid */
-    .project-info {
-        grid-template-columns: 1fr; /* Stack columns on mobile */
+    .desktop-links {
+        display: none; /* Hide desktop links on mobile/tablet */
+    }
+
+    .project-nav {
+        padding: 15px var(--spacing-md);
+    }
+    
+    /* Main Page adjustments */
+    .project-grid {
+        grid-template-columns: 1fr; /* Single column on mobile */
         gap: 30px;
     }
-
-    .project-detail .title-l {
-        font-size: 3rem !important; /* Override large font size on mobile */
+    .project-item:nth-child(2n) {
+        margin-top: 0; /* Remove staggering on mobile */
+    }
+    .media-showcase {
+        grid-template-columns: 1fr; /* Single column on mobile */
+    }
+    .contact-grid {
+        grid-template-columns: 1fr; /* Stack contact elements */
+    }
+    .signature-placeholder {
+        text-align: left;
+        margin-top: 40px;
+    }
+    
+    .hero-h1-sub {
+        font-size: 1rem;
+    }
+    .hero-h1 {
+        padding: 0 10px;
     }
 }
